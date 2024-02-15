@@ -40,79 +40,135 @@
     </div>
     
     <div class="container mt-5">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Zarejestruj się!</h1>
-            <p class="lead"></p>
-            <hr class="my-4">
-        </div>
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Zarejestruj się!</h1>
+        <p class="lead"></p>
+        <hr class="my-4">
+    </div>
 
-        <div class="row mb-6">
-            <form class="form-inline row mb">
+    <div class="row mb-6">
             <div class="row">
-                <div class="col-6">
+            <form class="col" method="POST" action="Rejestracja.php">
+            <input type="hidden" name="action" value="firma">
+                <div class="col">
                     <div class="card card-body">
-                        <form>
-
-                            <h2 class="display-6  text-center">Dla Firm</h2>
-
-                                <div class="row">
-                                    <div class="mb-3 col-md-12">
-                                        <label for="nazwa" class="form-label">Nazwa Użytkownika</label>
-                                        <input type="text" class="form-control" id="nazwa">
-                                    </div>
-                                    <div class="mb-3 col-md-12">
-                                        <label for="haslo" class="form-label">Hasło</label>
-                                        <input type="text" class="form-control" id="haslo">
-                                    </div>
-                                    <div class="mb-3 col-md-12">
-                                        <label for="nazwaFirmy" class="form-label">Nazwa Firmy</label>
-                                        <input type="text" class="form-control" id="nazwaFirmy">
-                                    </div>
-                                    <div class="mb-3 col-md-12">
-                                        <label for="AdresFirmy" class="form-label">Adres firmy</label>
-                                        <input type="text" class="form-control" id="AdresFirmy">
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" href="Rejestracja.html" role="button">Zarejestruj się</a>
-                                    </div>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card card-body">
-                            <form>
-
-                                <h2 class="display-6  text-center">Użytkownik</h2>
-                                    <div class="row">
-                                        <div class="mb-3 col-md-12">
-                                            <label for="imie" class="form-label">Imię</label>
-                                            <input type="text" class="form-control" id="imie">
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label for="nazwisko" class="form-label">Nazwisko</label>
-                                            <input type="text" class="form-control" id="nazwisko">
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label for="Email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="Email">
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label for="Haslo" class="form-label">Hasło</label>
-                                            <input type="text" class="form-control" id="Haslo">
-                                        </div>
-                                        <div class="text-center">
-                                            <a class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" href="Rejestracja.html" role="button">Zarejestruj się</a>
-                                        </div>
-                                    </div>
-                            </form>
+                        <h2 class="display-6  text-center">Dla Firm</h2>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label for="nazwaUzytkownikaFirmy" class="form-label">Nazwa Użytkownika</label>
+                                <input type="text" class="form-control" id="nazwaUzytkownikaFirmy" name="nazwaUzytkownikaFirmy">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="hasloFirmy" class="form-label">Hasło</label>
+                                <input type="text" class="form-control" id="hasloFirmy" name="hasloFirmy">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="nazwaFirmy" class="form-label">Nazwa Firmy</label>
+                                <input type="text" class="form-control" id="nazwaFirmy" name="nazwaFirmy">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="AdresFirmy" class="form-label">Adres firmy</label>
+                                <input type="text" class="form-control" id="AdresFirmy" name="AdresFirmy">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" role="button">Zarejestruj się</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </form>
-        </div>
-        
+                </form>
+                <form class="col" method="POST" action="Rejestracja.php">
+                <input type="hidden" name="action" value="uzytkownik">
+                <div class="col">
+                    <div class="card card-body">
+                        <h2 class="display-6 text-center">Użytkownik</h2>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label for="imie" class="form-label">Imię</label>
+                                <input type="text" class="form-control" id="imie" name="imie">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="nazwisko" class="form-label">Nazwisko</label>
+                                <input type="text" class="form-control" id="nazwisko" name="nazwisko">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="Email" name="Email">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="Haslo" class="form-label">Hasło</label>
+                                <input type="text" class="form-control" id="Haslo" name="Haslo">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn col-md-6 btn-secondary btn-lg mx-auto d-block">Zarejestruj się</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </form>
+            </div>
     </div>
+</div>
+</div>
+
+    <?php
+        // Połączenie z bazą danych (ustaw odpowiednie dane)
+        $host = "localhost";
+        $username = "root";
+        $password = "";
+        $database = "bazaprojekt";
+
+        $mysqli = new mysqli($host, $username, $password, $database);
+
+        // Sprawdzenie połączenia
+        if ($mysqli->connect_error) {
+            die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+        }
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if ($_POST['action'] == 'firma') {
+            // Dla Firm
+                if (isset($_POST["nazwaFirmy"]) && isset($_POST["AdresFirmy"])) {
+                    $nazwaFirmy = $_POST['nazwaFirmy'];
+                    $hasloFirmy = $_POST['hasloFirmy'];
+                    $AdresFirmy = $_POST['AdresFirmy'];
+
+                    // Wykonaj zapytanie SQL do dodania firmy
+                    $sqlFirma = "INSERT INTO firmy (NazwaFirmy, AdresFirmy) VALUES ('$nazwaFirmy', '$AdresFirmy')";
+                    $mysqli->query($sqlFirma);
+
+                    // Pobierz ID firmy
+                    $idFirmy = $mysqli->insert_id;
+
+                    // Dodaj do kontafirm
+                    $nazwaUzytkownikaFirma = $_POST["nazwaUzytkownikaFirmy"];
+                    $hasloFirma = $_POST["hasloFirmy"];
+                    $sqlKontoFirma = "INSERT INTO kontafirm (Firma_id, NazwaUżytkownika, Hasło) VALUES ('$idFirmy', '$nazwaUzytkownikaFirma', '$hasloFirma')";
+                    $mysqli->query($sqlKontoFirma);
+                }
+            } elseif ($_POST['action'] == 'uzytkownik') {
+
+            // Dla Użytkowników
+                if (isset($_POST["imie"]) && isset($_POST["nazwisko"]) && isset($_POST["Email"])) {
+                    $imie = $_POST["imie"];
+                    $nazwisko = $_POST["nazwisko"];
+                    $email = $_POST["Email"];
+                    $haslo = $_POST["Haslo"];
+
+                    // Wykonaj zapytanie SQL do dodania użytkownika
+                    $sqlUzytkownik = "INSERT INTO użytkownicy (Imię, Nazwisko, Email, Haslo) VALUES ('$imie', '$nazwisko', '$email', '$haslo')";
+                    $mysqli->query($sqlUzytkownik);
+
+                    // Pobierz ID użytkownika
+                    $idUzytkownika = $mysqli->insert_id;
+                }
+
+            }
+        }
+
+        // Zamknij połączenie
+        $mysqli->close();
+    ?>
 
     <footer class="container-fluid bg-light text-dark py-5 mt-5 shadow">
         <div class="row">

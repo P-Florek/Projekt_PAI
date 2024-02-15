@@ -40,63 +40,60 @@
     </div>
     
     <div class="container mt-5">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Zaloguj się!</h1>
-            <p class="lead"></p>
-            <hr class="my-4">
-        </div>
-
-        <div class="row mb-6">
-            <form class="form-inline row mb">
-            <div class="row">
-                <div class="col-6">
-                    <div class="card card-body">
-                        <form>
-
-                            <h2 class="display-6  text-center">Dla Firm</h2>
-
-                                <div class="row">
-                                    <div class="mb-3 col-md-12">
-                                        <label for="nazwa" class="form-label">Nazwa Użytkownika</label>
-                                        <input type="text" class="form-control" id="nazwa">
-                                    </div>
-                                    <div class="mb-3 col-md-12">
-                                        <label for="haslo" class="form-label">Hasło</label>
-                                        <input type="text" class="form-control" id="haslo">
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" href="Rejestracja.html" role="button">Zaloguj się</a>
-                                    </div>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="card card-body">
-                            <form>
-
-                                <h2 class="display-6  text-center">Użytkownik</h2>
-                                    <div class="row">
-                                        <div class="mb-3 col-md-12">
-                                            <label for="Email" class="form-label">Email</label>
-                                            <input type="text" class="form-control" id="Email">
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label for="Haslo" class="form-label">Hasło</label>
-                                            <input type="text" class="form-control" id="Haslo">
-                                        </div>
-                                        <div class="text-center">
-                                            <a class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" href="Rejestracja.html" role="button">Zaloguj się</a>
-                                        </div>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Zaloguj się!</h1>
+        <p class="lead"></p>
+        <hr class="my-4">
     </div>
+
+    <div class="row mb-6">
+        <div class="row">
+            <div class="col-6">
+                <div class="card card-body">
+                    <form class="col" method="POST" action="Logowanie.php">
+                        <input type="hidden" name="action" value="firma">
+                        <h2 class="display-6 text-center">Dla Firm</h2>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label for="nazwa" class="form-label">Nazwa Użytkownika</label>
+                                <input type="text" class="form-control" id="nazwa" name="nazwa">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="haslo" class="form-label">Hasło</label>
+                                <input type="text" class="form-control" id="haslo" name="haslo">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" type="submit" role="button">Zaloguj się</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="card card-body">
+                    <form class="col" method="POST" action="Logowanie.php">
+                        <input type="hidden" name="action" value="uzytkownik">
+                        <h2 class="display-6 text-center">Użytkownik</h2>
+                        <div class="row">
+                            <div class="mb-3 col-md-12">
+                                <label for="Email" class="form-label">Email</label>
+                                <input type="text" class="form-control" id="Email" name="Email">
+                            </div>
+                            <div class="mb-3 col-md-12">
+                                <label for="Haslo" class="form-label">Hasło</label>
+                                <input type="text" class="form-control" id="Haslo" name="Haslo">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn col-md-6 btn-secondary btn-lg mx-auto d-block" type="submit" role="button">Zaloguj się</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <footer class="container-fluid bg-light text-dark py-5 mt-5 shadow">
         <div class="row">
@@ -142,3 +139,63 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-lq0iPhPzGh8a7Xg8r9F6Q8cJqM8S+VvxQuDlEK3U/FO8fgwxRxMlWBRn4Hjd9agl" crossorigin="anonymous"></script>
 </body>
 </html>
+
+<?php
+    ob_start(); // Rozpocznij buforowanie wyjścia
+
+    // Połączenie z bazą danych (ustaw odpowiednie dane)
+    $host = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "bazaprojekt";
+
+    $mysqli = new mysqli($host, $username, $password, $database);
+
+    // Sprawdzenie połączenia
+    if ($mysqli->connect_error) {
+        die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['action'])) {
+            if ($_POST['action'] == 'firma') {
+                // Dla Firm
+                $nazwaFirmy = $_POST['nazwa'];
+                $hasloFirmy = $_POST['haslo'];
+
+                // Zapytanie SQL do pobrania danych firmy
+                $sqlFirma = "SELECT * FROM kontafirm WHERE NazwaUżytkownika='$nazwaFirmy' AND Hasło='$hasloFirmy'";
+                $resultFirma = $mysqli->query($sqlFirma);
+
+                if ($resultFirma->num_rows > 0) {
+                    // Zalogowano pomyślnie dla firmy
+                    // Możesz przekierować użytkownika do odpowiedniej strony
+                    echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
+                    exit(); // Upewnij się, że po przekierowaniu nie wykonuje się więcej kodu
+                } else {
+                    echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
+                }
+            } elseif ($_POST['action'] == 'uzytkownik') {
+                // Dla Użytkowników
+                $email = $_POST['Email'];
+                $haslo = $_POST['Haslo'];
+
+                // Zapytanie SQL do pobrania danych użytkownika
+                $sqlUzytkownik = "SELECT * FROM użytkownicy WHERE Email='$email' AND Haslo='$haslo'";
+                $resultUzytkownik = $mysqli->query($sqlUzytkownik);
+
+                if ($resultUzytkownik->num_rows > 0) {
+                    // Zalogowano pomyślnie dla użytkownika
+                    // Możesz przekierować użytkownika do odpowiedniej strony
+                    echo "Zalogowano pomyślnie dla użytkownika!";
+                } else {
+                    echo "Błąd logowania dla użytkownika. Sprawdź email i hasło.";
+                }
+            }
+        }
+    }
+
+    // Zamknij połączenie
+    $mysqli->close();
+    ob_end_flush(); // Wypisz buforowane dane
+?>
