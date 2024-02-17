@@ -198,34 +198,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_SESSION["current_user"])){
                     echo "zalogowano";
                     echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
-                    //exit();
+                    exit();
                 } else {
                     echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
                 }
+            }
+        }
+    }
+    if ($_POST['action'] == 'uzytkownik') {
+        $email = $_POST['Email'];
+        $haslo = $_POST['Haslo'];
+
+        $sqlUzytkownik = "SELECT Użytkownik_id FROM użytkownicy WHERE Email='$email' AND Haslo='$haslo'";
+        $resultUzytkownik = $mysqli->query($sqlUzytkownik);
+
+        if ($resultUzytkownik->num_rows > 0) {
+            $row = $resultUzytkownik->fetch_assoc();
+            $userId = $row['Użytkownik_id'];
+            
+            $_SESSION["current_user"] = $userId;
+            session_start();
+            
+            if (isset($_SESSION["current_user"])){
+                echo "zalogowano";
+                echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
+                exit();
             } else {
-                if ($_POST['action'] == 'uzytkownik') {
-                    $email = $_POST['Email'];
-                    $haslo = $_POST['Haslo'];
-        
-                    $sqlUzytkownik = "SELECT Uzytkownik_id FROM użytkownicy WHERE Email='$email' AND Hasło='$haslo'";
-                    $resultUzytkownik = $mysqli->query($sqlUzytkownik);
-        
-                    if ($resultUzytkownik->num_rows > 0) {
-                        $row = $resultUzytkownik->fetch_assoc();
-                        $userId = $row['Uzytkownik_id'];
-                        
-                        $_SESSION["current_user"] = $userId;
-                        session_start();
-                        
-                        if (isset($_SESSION["current_user"])){
-                            echo "zalogowano";
-                            echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
-                            //exit();
-                        } else {
-                            echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
-                        }
-                    }
-                }
+                echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
             }
         }
     }

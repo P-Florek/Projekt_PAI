@@ -33,6 +33,98 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+$userID = $_SESSION["current_user"];  
+
+$query = "SELECT imię, nazwisko, DataUrodzenia, Email, NumerTelefonu, ZdjęcieProfilowe, adres, AktualneStanowiskoPracy, opisStanowiskaPracy, Podsumowaniezawodowe, LinkedInProfil, GitHubProfil FROM użytkownicy WHERE Użytkownik_id = $userID";
+$result = $mysqli->query($query);
+
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+
+    $imie = $userData['imię'];
+    $nazwisko = $userData['nazwisko'];
+    $dataUrodzenia = $userData['DataUrodzenia'];
+    $email = $userData['Email'];
+    $nrTel = $userData['NumerTelefonu'];
+    $zdj = $userData['ZdjęcieProfilowe'];
+    $adres = $userData['adres'];
+    $stanowiskoPracy = $userData['AktualneStanowiskoPracy'];
+    $opisStanowiskaPracy = $userData['opisStanowiskaPracy'];
+    $Podsumowaniezawodowe = $userData['Podsumowaniezawodowe'];
+    $LinkedInProfil = $userData['LinkedInProfil'];
+    $ProfilGIT = $userData['GitHubProfil'];
+}
+
+$wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
+$wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
+
+if ($wyksztalcenieResult->num_rows > 0) {
+    $wyksztalcenieData = $wyksztalcenieResult->fetch_assoc();
+
+    $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
+    $lokalizacja = $wyksztalcenieData['Lokalizacja'];
+    $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
+    $kierunek = $wyksztalcenieData['Kierunek'];
+    $okres = $wyksztalcenieData['Okres'];
+}else{
+    $nazwaSzkolyUczelni = "brak";
+    $lokalizacja = "brak";
+    $poziomWyksztalcenia = "brak";
+    $kierunek = "brak";
+    $okres = "brak";
+}
+
+$doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
+$doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
+
+if ($doswiadczenieResult->num_rows > 0) {
+    $doswiadczenieData = $doswiadczenieResult->fetch_assoc();
+
+    $stanowisko = $doswiadczenieData['Stanowisko'];
+    $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
+    $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
+    $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
+    $obowiazki = $doswiadczenieData['Obowiązki'];
+} else {
+    $stanowisko = "brak";
+    $nazwaFirmy = "brak";
+    $lokalizacjaDoswiadczenia = "brak";
+    $okresZatrudnienia = "brak";
+    $obowiazki = "brak";
+}
+
+$umiejetnosciQuery = "SELECT * FROM umiejętności WHERE Użytkownik_id = $userID";
+$umiejetnosciResult = $mysqli->query($umiejetnosciQuery);
+
+$umiejetnosci = array();
+
+if ($umiejetnosciResult->num_rows > 0) {
+    while ($umiejetnoscData = $umiejetnosciResult->fetch_assoc()) {
+        $umiejetnosci[] = $umiejetnoscData['NazwaUmiejętności'];
+    }
+} else {
+    $umiejetnosci[] = "brak";
+}
+
+$jezykiQuery = "SELECT * FROM języki WHERE Użytkownik_id = $userID";
+$jezykiResult = $mysqli->query($jezykiQuery);
+
+$jezyki = array();
+
+if ($jezykiResult->num_rows > 0) {
+    while ($jezykData = $jezykiResult->fetch_assoc()) {
+        $jezyki[] = array(
+            'NazwaJęzyka' => $jezykData['NazwaJęzyka'],
+            'PoziomZnajomości' => $jezykData['PoziomZnajomości']
+        );
+    }
+} else {
+    $jezyki[] = array(
+        'NazwaJęzyka' => "brak",
+        'PoziomZnajomości' => "brak"
+    );
+}
+
 $mysqli->close();
 ?>
 
@@ -97,11 +189,10 @@ $mysqli->close();
                             Usuń Konto
                         </button>
                     </div>
-                    <div class="mb-3 col-md-6 d-grid gap-2">
-                    <form method="post">
+                    <form class="mb-3 col-md-6 d-grid gap-2" method="post">
                         <button class="btn btn-secondary" type="submit" name="logout">Wyloguj się</button>
                     </form>
-                    </div>
+
                 </div>
             </div>
 
@@ -114,43 +205,43 @@ $mysqli->close();
             <div class="row">
                 <div class="mb-3 col-md-6">
                     <label for="imie" class="form-label">Imię :</label>
-                    <label for="imie" class="form-label" id="imie"></label>
+                    <label for="imie" class="form-label" id="imie"><?php echo $imie; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="Nazwisko" class="form-label">Nazwisko :</label>
-                    <label for="Nazwisko" class="form-label" id="nazwisko"></label>
+                    <label for="Nazwisko" class="form-label" id="nazwisko"><?php echo $nazwisko; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="DataUrodzenia" class="form-label">Data Urodzenia :</label>
-                    <label for="DataUrodzenia" class="form-label" id="DataUrodzenia"></label>
+                    <label for="DataUrodzenia" class="form-label" id="DataUrodzenia"><?php echo $dataUrodzenia; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="ZdjecieProfilowe" class="form-label">Zdjecie Profilowe :</label>
-                    <label for="imZdjecieProfiloweie" class="form-label" id="zdj"></label>
+                    <label for="imZdjecieProfiloweie" class="form-label" id="zdj"><?php echo $zdj; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="Adres" class="form-label">Adres :</label>
-                    <label for="Adres" class="form-label" id="adres"></label>
+                    <label for="Adres" class="form-label" id="adres"><?php echo $adres; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="stanowiskoPracy" class="form-label">Aktualne stanowisko pracy :</label>
-                    <label for="stanowiskoPracy" class="form-label" id="stanowiskoPracy"></label>
+                    <label for="stanowiskoPracy" class="form-label" id="stanowiskoPracy"><?php echo $stanowiskoPracy; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="opisStanowiskaPracy" class="form-label">Opis stanowiska pracy :</label>
-                    <label for="opisStanowiskaPracy" class="form-label" id="opisStanowiskaPracy"></label>
+                    <label for="opisStanowiskaPracy" class="form-label" id="opisStanowiskaPracy"><?php echo $opisStanowiskaPracy; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="Podsumowaniezawodowe" class="form-label">Podsumowanie Zawodowe :</label>
-                    <label for="Podsumowaniezawodowe" class="form-label" id="Podsumowaniezawodowe"></label>
+                    <label for="Podsumowaniezawodowe" class="form-label" id="Podsumowaniezawodowe"><?php echo $Podsumowaniezawodowe; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="LinkedInProfil" class="form-label">Linked in profil :</label>
-                    <label for="LinkedInProfil" class="form-label" id="LinkedInProfil"></label>
+                    <label for="LinkedInProfil" class="form-label" id="LinkedInProfil"><?php echo $LinkedInProfil; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
                     <label for="ProfilGIT" class="form-label">profil GitHub :</label>
-                    <label for="ProfilGIT" class="form-label" id="ProfilGIT"></label>
+                    <label for="ProfilGIT" class="form-label" id="ProfilGIT"><?php echo $ProfilGIT; ?></label>
                 </div>
             </div>
         </div>
@@ -166,44 +257,44 @@ $mysqli->close();
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <label for="imie" class="form-label">Imię</label>
-                                    <input type="text" class="form-control" id="imie">
+                                    <input type="text" class="form-control" id="imie" value="<?php echo $imie; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="nazwisko" class="form-label">Nazwisko</label>
-                                    <input type="text" class="form-control" id="nazwisko">
+                                    <input type="text" class="form-control" id="nazwisko" value="<?php echo $nazwisko; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="dataUrodzenia" class="form-label">Data Urodzenia</label>
-                                    <input type="date" class="form-control" id="DataUrodzenia">
+                                    <input type="date" class="form-control" id="DataUrodzenia" value="<?php echo $dataUrodzenia; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="zdj" class="form-label">Zdjecie Profilowe</label>
-                                    <input type="text" class="form-control" id="zdj">
+                                    <input type="text" class="form-control" id="zdj" value="<?php echo $zdj; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="adres" class="form-label">Adres</label>
-                                    <input type="text" class="form-control" id="adres">
+                                    <input type="text" class="form-control" id="adres" value="<?php echo $adres; ?>">
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="stanowiskoPracy" class="form-label">Aktualne stanowisko pracy</label>
-                                    <input type="text" class="form-control" id="stanowiskoPracy">
+                                    <input type="text" class="form-control" id="stanowiskoPracy" value="<?php echo $stanowiskoPracy; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="opisStanowiskaPracy" class="form-label">Opis stanowiska pracy</label>
-                                    <input type="text" class="form-control" id="opisStanowiskaPracy">
+                                    <input type="text" class="form-control" id="opisStanowiskaPracy" value="<?php echo $opisStanowiskaPracy; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="Podsumowaniezawodowe" class="form-label">Podsumowanie Zawodowe</label>
-                                    <input type="text" class="form-control" id="Podsumowaniezawodowe">
+                                    <input type="text" class="form-control" id="Podsumowaniezawodowe" value="<?php echo $Podsumowaniezawodowe; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="LinkedInProfil" class="form-label">Linked in profil</label>
-                                    <input type="text" class="form-control" id="LinkedInProfil">
+                                    <input type="text" class="form-control" id="LinkedInProfil" value="<?php echo $LinkedInProfil; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="ProfilGIT" class="form-label">profil GitHub</label>
-                                    <input type="text" class="form-control" id="ProfilGIT">
+                                    <input type="text" class="form-control" id="ProfilGIT" value="<?php echo $ProfilGIT; ?>">
                                 </div>
                             </div>
     
@@ -223,11 +314,11 @@ $mysqli->close();
                 <div class="row">
                     <div class="mb-3 col-md-6">
                         <label for="Email" class="form-label">Email :</label>
-                        <label for="Email" class="form-label" id="Email"></label>
+                        <label for="Email" class="form-label" id="Email"><?php echo $email; ?></label>
                     </div>
                     <div class="mb-3 col-md-6">
                         <label for="Nrtel" class="form-label">Numer telefonu :</label>
-                        <label for="Nrtel" class="form-label" id="numerTelefonu"></label>
+                        <label for="Nrtel" class="form-label" id="numerTelefonu"><?php echo $nrTel; ?></label>
                     </div>
                 </div>
             </div>
@@ -243,11 +334,11 @@ $mysqli->close();
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
                                         <label for="Email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="Email">
+                                        <input type="text" class="form-control" id="Email" value="<?php echo $email; ?>">
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="numerTelefonu" class="form-label">Numer telefonu</label>
-                                        <input type="text" class="form-control" id="numerTelefonu">
+                                        <input type="text" class="form-control" id="numerTelefonu" value="<?php echo $nrTel; ?>">
                                     </div>
                                 </div>
 
@@ -266,23 +357,23 @@ $mysqli->close();
                     <div class="row">
                         <div class="mb-3 col-md-6">
                             <label for="NazwaSzkoly" class="form-label">Nazwa szkoły/Uczelni :</label>
-                            <label for="NazwaSzkoly" class="form-label" id="NazwaSzkoly"></label>
+                            <label for="NazwaSzkoly" class="form-label" id="NazwaSzkoly"><?php echo $nazwaSzkolyUczelni; ?></label>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="Lokalizacja" class="form-label">Lokalizacja :</label>
-                            <label for="Lokalizacja" class="form-label" id="Lokalizacja"></label>
+                            <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $lokalizacja; ?></label>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="PoziomWyksztalcenia" class="form-label">Poziom Wykształcenia :</label>
-                            <label for="PoziomWyksztalcenia" class="form-label" id="PoziomWyksztalcenia"></label>
+                            <label for="PoziomWyksztalcenia" class="form-label" id="PoziomWyksztalcenia"><?php echo $poziomWyksztalcenia; ?></label>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="Kierunek" class="form-label">Kierunek :</label>
-                            <label for="Kierunek" class="form-label" id="Kierunek"></label>
+                            <label for="Kierunek" class="form-label" id="Kierunek"><?php echo $kierunek; ?></label>
                         </div>
                         <div class="mb-3 col-md-12">
                             <label for="Okres" class="form-label">Okres :</label>
-                            <label for="Okres" class="form-label" id="Okres"></label>
+                            <label for="Okres" class="form-label" id="Okres"><?php echo $okres; ?></label>
                         </div>
                     </div>
                 </div>
@@ -298,23 +389,23 @@ $mysqli->close();
                                     <div class="row">
                                         <div class="mb-3 col-md-6">
                                             <label for="NazwaSzkoly" class="form-label">Nazwa szkoły/Uczelni</label>
-                                            <input type="text" class="form-control" id="NazwaSzkoly">
+                                            <input type="text" class="form-control" id="NazwaSzkoly" value="<?php echo $nazwaSzkolyUczelni; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                            <input type="text" class="form-control" id="Lokalizacja">
+                                            <input type="text" class="form-control" id="Lokalizacja" value="<?php echo $lokalizacja; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="PoziomWyksztalcenia" class="form-label">Poziom Wykształcenia</label>
-                                            <input type="text" class="form-control" id="PoziomWyksztalcenia">
+                                            <input type="text" class="form-control" id="PoziomWyksztalcenia" value="<?php echo $poziomWyksztalcenia; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="Kierunek" class="form-label">Kierunek</label>
-                                            <input type="text" class="form-control" id="Kierunek">
+                                            <input type="text" class="form-control" id="Kierunek" value="<?php echo $kierunek; ?>">
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label for="Okres" class="form-label">Okres</label>
-                                            <input type="text" class="form-control" id="Okres">
+                                            <input type="text" class="form-control" id="Okres" value="<?php echo $okres; ?>">
                                         </div>
                                     </div>
                     
@@ -331,23 +422,23 @@ $mysqli->close();
                         <div class="row">
                             <div class="mb-3 col-md-6">
                                 <label for="Stanowisko" class="form-label">Stanowisko :</label>
-                                <label for="Stanowisko" class="form-label" id="stanowiska"></label>
+                                <label for="Stanowisko" class="form-label" id="stanowiska"><?php echo $stanowisko; ?></label>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="NazwaFirmy" class="form-label">Nazwa Firmy :</label>
-                                <label for="NazwaFirmy" class="form-label" id="NazwaFirmy"></label>
+                                <label for="NazwaFirmy" class="form-label" id="NazwaFirmy"><?php echo $nazwaFirmy; ?></label>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="Lokalizacja" class="form-label">Lokalizacja :</label>
-                                <label for="Lokalizacja" class="form-label" id="Lokalizacja"></label>
+                                <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $lokalizacjaDoswiadczenia; ?></label>
                             </div>
                             <div class="mb-3 col-md-6">
                                 <label for="Okres" class="form-label">Okres Zatrudnienia :</label>
-                                <label for="Okres" class="form-label" id="Okres"></label>
+                                <label for="Okres" class="form-label" id="Okres"><?php echo $okresZatrudnienia; ?></label>
                             </div>
                             <div class="mb-3 col-md-12">
                                 <label for="Obowiązki" class="form-label">Obowiązki :</label>
-                                <label for="Obowiązki" class="form-label" id="Obowiazki"></label>
+                                <label for="Obowiązki" class="form-label" id="Obowiazki"><?php echo $obowiazki; ?></label>
                             </div>
                         </div>
                     </div>
@@ -363,23 +454,23 @@ $mysqli->close();
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
                                                 <label for="stanowiska" class="form-label">Stanowisko</label>
-                                                <input type="text" class="form-control" id="stanowiska">
+                                                <input type="text" class="form-control" id="stanowiska" value="<?php echo $stanowisko; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="NazwaFirmy" class="form-label">Nazwa Firmy</label>
-                                                <input type="text" class="form-control" id="NazwaFirmy">
+                                                <input type="text" class="form-control" id="NazwaFirmy" value="<?php echo $nazwaFirmy; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                                <input type="text" class="form-control" id="Lokalizacja">
+                                                <input type="text" class="form-control" id="Lokalizacja" value="<?php echo $lokalizacjaDoswiadczenia; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Okres" class="form-label">Okres Zatrudnienia</label>
-                                                <input type="text" class="form-control" id="Okres">
+                                                <input type="text" class="form-control" id="Okres" value="<?php echo $okresZatrudnienia; ?>">
                                             </div>
                                             <div class="mb-3 col-md-12">
                                                 <label for="Obowiązki" class="form-label">Obowiązki</label>
-                                                <input type="text" class="form-control" id="Obowiazki">
+                                                <input type="text" class="form-control" id="Obowiazki" value="<?php echo $obowiazki; ?>">
                                             </div>
                                         </div>
        
@@ -397,7 +488,9 @@ $mysqli->close();
                             <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności :</label>
-                                    <label for="nazwaUmiejetnosci" class="form-label" id="nazwaUmiejetnosci"></label>
+                                    <label for="nazwaUmiejetnosci" class="form-label" id="nazwaUmiejetnosci">
+                                        <?php echo implode(', ', $umiejetnosci); ?>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -413,7 +506,7 @@ $mysqli->close();
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności</label>
-                                                    <input type="text" class="form-control" id="nazwaUmiejetnosci">
+                                                    <input type="text" class="form-control" id="nazwaUmiejetnosci" value="<?php echo implode(', ', $umiejetnosci); ?>">
                                                 </div>
                                             </div>
        
@@ -429,14 +522,16 @@ $mysqli->close();
                     <h2>Języki</h2>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="NazwaJezyka" class="form-label">Nazwa języka :</label>
-                                    <label for="NazwaJezyka" class="form-label" id="NazwaJezyka"></label>
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="Poziom" class="form-label">Poziom znajomości :</label>
-                                    <label for="Poziom" class="form-label" id="poziomZnajomosci"></label>
-                                </div>
+                                <?php foreach ($jezyki as $jezyk): ?>
+                                    <div class="mb-3 col-md-6">
+                                        <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
+                                        <label for="NazwaJezyka" class="form-label" id="NazwaJezyka"><?php echo $jezyk['NazwaJęzyka']; ?></label>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label for="Poziom" class="form-label">Poziom znajomości:</label>
+                                        <label for="Poziom" class="form-label" id="poziomZnajomosci"><?php echo $jezyk['PoziomZnajomości']; ?></label>
+                                    </div>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                         <p>
@@ -449,14 +544,16 @@ $mysqli->close();
                                     <form>
                                         <div class="col-md-12">
                                             <div class="row">
+                                            <?php foreach ($jezyki as $jezyk): ?>
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="NazwaJezyka" class="form-label">Nazwa języka</label>
-                                                    <input type="text" class="form-control" id="NazwaJezyka">
+                                                    <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
+                                                    <input type="text" class="form-control" id="NazwaJezyka" value="<?php echo $jezyk['NazwaJęzyka']; ?>">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
-                                                    <label for="Poziom" class="form-label">Poziom znajomości</label>
-                                                    <input type="text" class="form-control" id="poziomZnajomosci">
+                                                    <label for="Poziom" class="form-label">Poziom znajomości:</label>
+                                                    <input type="text" class="form-control" id="poziomZnajomosci" value="<?php echo $jezyk['PoziomZnajomości']; ?>">
                                                 </div>
+                                            <?php endforeach; ?>
                                             </div>
 
                                             <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
