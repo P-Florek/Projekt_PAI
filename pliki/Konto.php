@@ -66,12 +66,27 @@ if ($wyksztalcenieResult->num_rows > 0) {
     $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
     $kierunek = $wyksztalcenieData['Kierunek'];
     $okres = $wyksztalcenieData['Okres'];
-}else{
-    $nazwaSzkolyUczelni = "brak";
-    $lokalizacja = "brak";
-    $poziomWyksztalcenia = "brak";
-    $kierunek = "brak";
-    $okres = "brak";
+} else {
+
+    $insertQuery = "INSERT INTO wykształcenie (Użytkownik_id, NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres) VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
+
+    if ($mysqli->query($insertQuery) === TRUE) {
+
+        $wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
+        $wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
+
+        if ($wyksztalcenieResult->num_rows > 0) {
+            $wyksztalcenieData = $wyksztalcenieResult->fetch_assoc();
+
+            $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
+            $lokalizacja = $wyksztalcenieData['Lokalizacja'];
+            $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
+            $kierunek = $wyksztalcenieData['Kierunek'];
+            $okres = $wyksztalcenieData['Okres'];
+        }
+    } else {
+        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
+    }
 }
 
 $doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
@@ -86,11 +101,24 @@ if ($doswiadczenieResult->num_rows > 0) {
     $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
     $obowiazki = $doswiadczenieData['Obowiązki'];
 } else {
-    $stanowisko = "brak";
-    $nazwaFirmy = "brak";
-    $lokalizacjaDoswiadczenia = "brak";
-    $okresZatrudnienia = "brak";
-    $obowiazki = "brak";
+    $insertQuery = "INSERT INTO doświadczenie (Użytkownik_id, Stanowisko, NazwaFirmy, Lokalizacja, OkresZatrudnienia, Obowiązki) 
+                    VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
+
+    if ($mysqli->query($insertQuery) === TRUE) {
+
+        $doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
+        $doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
+
+        if ($doswiadczenieResult->num_rows > 0) {
+            $stanowisko = $doswiadczenieData['Stanowisko'];
+            $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
+            $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
+            $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
+            $obowiazki = $doswiadczenieData['Obowiązki'];
+        }
+    } else {
+        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
+    }
 }
 
 $umiejetnosciQuery = "SELECT * FROM umiejętności WHERE Użytkownik_id = $userID";
@@ -104,6 +132,12 @@ if ($umiejetnosciResult->num_rows > 0) {
     }
 } else {
     $umiejetnosci[] = "brak";
+
+    $insertQuery = "INSERT INTO umiejętności (Użytkownik_id, NazwaUmiejętności) VALUES ('$userID', 'brak')";
+
+    if ($mysqli->query($insertQuery) === FALSE) {
+        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
+    }
 }
 
 $jezykiQuery = "SELECT * FROM języki WHERE Użytkownik_id = $userID";
@@ -123,6 +157,12 @@ if ($jezykiResult->num_rows > 0) {
         'NazwaJęzyka' => "brak",
         'PoziomZnajomości' => "brak"
     );
+
+    $insertQuery = "INSERT INTO języki (Użytkownik_id, NazwaJęzyka, PoziomZnajomości) VALUES ('$userID', 'brak', 'brak')";
+
+    if ($mysqli->query($insertQuery) === FALSE) {
+        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
+    }
 }
 
 $mysqli->close();
@@ -250,51 +290,52 @@ $mysqli->close();
             Edytuj
             </button>
         </p>
-            <div class="collapse" id="collapseExample2">
-                <div class="card card-body">
-                    <form>
-                        <div class="col-md-12">
-                            <div class="row">
+        <div class="collapse" id="collapseExample2">
+            <div class="card card-body">
+                <form action="edytuj_profil.php" method="post">
+                <input type="hidden" name="action" value="personalne">
+                    <div class="col-md-12">
+                        <div class="row">
                                 <div class="mb-3 col-md-6">
                                     <label for="imie" class="form-label">Imię</label>
-                                    <input type="text" class="form-control" id="imie" value="<?php echo $imie; ?>">
+                                    <input type="text" class="form-control" id="imie" name='imie' value="<?php echo $imie; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="nazwisko" class="form-label">Nazwisko</label>
-                                    <input type="text" class="form-control" id="nazwisko" value="<?php echo $nazwisko; ?>">
+                                    <input type="text" class="form-control" id="nazwisko" name='nazwisko' value="<?php echo $nazwisko; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="dataUrodzenia" class="form-label">Data Urodzenia</label>
-                                    <input type="date" class="form-control" id="DataUrodzenia" value="<?php echo $dataUrodzenia; ?>">
+                                    <input type="date" class="form-control" id="DataUrodzenia" name='DataUrodzenia' value="<?php echo $dataUrodzenia; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="zdj" class="form-label">Zdjecie Profilowe</label>
-                                    <input type="text" class="form-control" id="zdj" value="<?php echo $zdj; ?>">
+                                    <input type="text" class="form-control" id="zdj" name='zdj' value="<?php echo $zdj; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="adres" class="form-label">Adres</label>
-                                    <input type="text" class="form-control" id="adres" value="<?php echo $adres; ?>">
+                                    <input type="text" class="form-control" id="adres" name='adres' value="<?php echo $adres; ?>">
                                 </div>
 
                                 <div class="mb-3 col-md-6">
                                     <label for="stanowiskoPracy" class="form-label">Aktualne stanowisko pracy</label>
-                                    <input type="text" class="form-control" id="stanowiskoPracy" value="<?php echo $stanowiskoPracy; ?>">
+                                    <input type="text" class="form-control" id="stanowiskoPracy" name='stanowiskoPracy' value="<?php echo $stanowiskoPracy; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="opisStanowiskaPracy" class="form-label">Opis stanowiska pracy</label>
-                                    <input type="text" class="form-control" id="opisStanowiskaPracy" value="<?php echo $opisStanowiskaPracy; ?>">
+                                    <input type="text" class="form-control" id="opisStanowiskaPracy" name='opisStanowiskaPracy' value="<?php echo $opisStanowiskaPracy; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="Podsumowaniezawodowe" class="form-label">Podsumowanie Zawodowe</label>
-                                    <input type="text" class="form-control" id="Podsumowaniezawodowe" value="<?php echo $Podsumowaniezawodowe; ?>">
+                                    <input type="text" class="form-control" id="Podsumowaniezawodowe" name='Podsumowaniezawodowe' value="<?php echo $Podsumowaniezawodowe; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="LinkedInProfil" class="form-label">Linked in profil</label>
-                                    <input type="text" class="form-control" id="LinkedInProfil" value="<?php echo $LinkedInProfil; ?>">
+                                    <input type="text" class="form-control" id="LinkedInProfil" name='LinkedInProfil' value="<?php echo $LinkedInProfil; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="ProfilGIT" class="form-label">profil GitHub</label>
-                                    <input type="text" class="form-control" id="ProfilGIT" value="<?php echo $ProfilGIT; ?>">
+                                    <input type="text" class="form-control" id="ProfilGIT" name='ProfilGIT' value="<?php echo $ProfilGIT; ?>">
                                 </div>
                             </div>
     
@@ -329,16 +370,17 @@ $mysqli->close();
             </p>
                 <div class="collapse" id="collapseExample3">
                     <div class="card card-body">
-                        <form>
+                        <form method="post" action="edytuj_profil.php">
+                        <input type="hidden" name="action" value="kontaktowe">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
                                         <label for="Email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="Email" value="<?php echo $email; ?>">
+                                        <input type="text" class="form-control" id="Email" name="email" value="<?php echo $email; ?>">
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="numerTelefonu" class="form-label">Numer telefonu</label>
-                                        <input type="text" class="form-control" id="numerTelefonu" value="<?php echo $nrTel; ?>">
+                                        <input type="text" class="form-control" id="numerTelefonu" name="nrtel" value="<?php echo $nrTel; ?>">
                                     </div>
                                 </div>
 
@@ -384,28 +426,29 @@ $mysqli->close();
                 </p>
                     <div class="collapse" id="collapseExample4">
                         <div class="card card-body">
-                            <form>
+                        <form method="post" action="edytuj_profil.php">
+                            <input type="hidden" name="action" value="wyksztalcenie">
                                 <div class="col-md-12">
                                     <div class="row">
                                         <div class="mb-3 col-md-6">
                                             <label for="NazwaSzkoly" class="form-label">Nazwa szkoły/Uczelni</label>
-                                            <input type="text" class="form-control" id="NazwaSzkoly" value="<?php echo $nazwaSzkolyUczelni; ?>">
+                                            <input type="text" class="form-control" id="NazwaSzkoly" name="nazwaSzkoly" value="<?php echo $nazwaSzkolyUczelni; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                            <input type="text" class="form-control" id="Lokalizacja" value="<?php echo $lokalizacja; ?>">
+                                            <input type="text" class="form-control" id="okalizacja" name="Lokalizacja" value="<?php echo $lokalizacja; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="PoziomWyksztalcenia" class="form-label">Poziom Wykształcenia</label>
-                                            <input type="text" class="form-control" id="PoziomWyksztalcenia" value="<?php echo $poziomWyksztalcenia; ?>">
+                                            <input type="text" class="form-control" id="oziomWyksztalcenia" name="PoziomWyksztalcenia" value="<?php echo $poziomWyksztalcenia; ?>">
                                         </div>
                                         <div class="mb-3 col-md-6">
                                             <label for="Kierunek" class="form-label">Kierunek</label>
-                                            <input type="text" class="form-control" id="Kierunek" value="<?php echo $kierunek; ?>">
+                                            <input type="text" class="form-control" id="ierunek" name="Kierunek" value="<?php echo $kierunek; ?>">
                                         </div>
                                         <div class="mb-3 col-md-12">
                                             <label for="Okres" class="form-label">Okres</label>
-                                            <input type="text" class="form-control" id="Okres" value="<?php echo $okres; ?>">
+                                            <input type="text" class="form-control" id="kres" name="Okres" value="<?php echo $okres; ?>">
                                         </div>
                                     </div>
                     
@@ -449,28 +492,29 @@ $mysqli->close();
                     </p>
                         <div class="collapse" id="collapseExample5">
                             <div class="card card-body">
-                                <form>
+                                <form method="post" action="edytuj_profil.php">
+                                <input type="hidden" name="action" value="doswiadczenie">
                                     <div class="col-md-12">
                                         <div class="row">
                                             <div class="mb-3 col-md-6">
                                                 <label for="stanowiska" class="form-label">Stanowisko</label>
-                                                <input type="text" class="form-control" id="stanowiska" value="<?php echo $stanowisko; ?>">
+                                                <input type="text" class="form-control" id="stanowiska" name="stanowiskaa" value="<?php echo $stanowisko; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="NazwaFirmy" class="form-label">Nazwa Firmy</label>
-                                                <input type="text" class="form-control" id="NazwaFirmy" value="<?php echo $nazwaFirmy; ?>">
+                                                <input type="text" class="form-control" id="NazwaFirmy" name="NazwaFirmyy" value="<?php echo $nazwaFirmy; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                                <input type="text" class="form-control" id="Lokalizacja" value="<?php echo $lokalizacjaDoswiadczenia; ?>">
+                                                <input type="text" class="form-control" id="Lokalizacja" name="Lokalizacjaa" value="<?php echo $lokalizacjaDoswiadczenia; ?>">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label for="Okres" class="form-label">Okres Zatrudnienia</label>
-                                                <input type="text" class="form-control" id="Okres" value="<?php echo $okresZatrudnienia; ?>">
+                                                <input type="text" class="form-control" id="Okres" name="Okress" value="<?php echo $okresZatrudnienia; ?>">
                                             </div>
                                             <div class="mb-3 col-md-12">
                                                 <label for="Obowiązki" class="form-label">Obowiązki</label>
-                                                <input type="text" class="form-control" id="Obowiazki" value="<?php echo $obowiazki; ?>">
+                                                <input type="text" class="form-control" id="Obowiazki" name="Obowiazkii" value="<?php echo $obowiazki; ?>">
                                             </div>
                                         </div>
        
@@ -489,7 +533,13 @@ $mysqli->close();
                                 <div class="mb-3 col-md-6">
                                     <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności :</label>
                                     <label for="nazwaUmiejetnosci" class="form-label" id="nazwaUmiejetnosci">
-                                        <?php echo implode(', ', $umiejetnosci); ?>
+                                        <?php
+                                        if ($umiejetnosci[0] !== "brak") {
+                                            echo implode(', ', $umiejetnosci);
+                                        } else {
+                                            echo "Brak umiejętności";
+                                        }
+                                        ?>
                                     </label>
                                 </div>
                             </div>
@@ -501,12 +551,13 @@ $mysqli->close();
                         </p>
                             <div class="collapse" id="collapseExample6">
                                 <div class="card card-body">
-                                    <form>
+                                    <form method="post" action="edytuj_profil.php">
+                                    <input type="hidden" name="action" value="umiejetnosci">
                                         <div class="col-md-12">
                                             <div class="row">
                                                 <div class="mb-3 col-md-6">
                                                     <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności</label>
-                                                    <input type="text" class="form-control" id="nazwaUmiejetnosci" value="<?php echo implode(', ', $umiejetnosci); ?>">
+                                                    <input type="text" class="form-control" id="nazwaUmiejetnosci" name="nazwaUmiejetnoscii" value="<?php echo implode(', ', $umiejetnosci); ?>">
                                                 </div>
                                             </div>
        
@@ -541,17 +592,18 @@ $mysqli->close();
                         </p>
                             <div class="collapse" id="collapseExample7">
                                 <div class="card card-body">
-                                    <form>
+                                    <form method="post" action="edytuj_profil.php">
+                                    <input type="hidden" name="action" value="jezyki">
                                         <div class="col-md-12">
                                             <div class="row">
                                             <?php foreach ($jezyki as $jezyk): ?>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
-                                                    <input type="text" class="form-control" id="NazwaJezyka" value="<?php echo $jezyk['NazwaJęzyka']; ?>">
+                                                    <input type="text" class="form-control" id="NazwaJezyka" name="NazwaJezykaa" value="<?php echo $jezyk['NazwaJęzyka']; ?>">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="Poziom" class="form-label">Poziom znajomości:</label>
-                                                    <input type="text" class="form-control" id="poziomZnajomosci" value="<?php echo $jezyk['PoziomZnajomości']; ?>">
+                                                    <input type="text" class="form-control" id="poziomZnajomosci" name="poziomZnajomoscii" value="<?php echo $jezyk['PoziomZnajomości']; ?>">
                                                 </div>
                                             <?php endforeach; ?>
                                             </div>
