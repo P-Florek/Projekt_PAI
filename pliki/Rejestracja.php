@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "bazaprojekt";
+
+$mysqli = new mysqli($host, $username, $password, $database);
+
+if ($mysqli->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+}
+
+
+if (isset($_SESSION["current_user"])) {
+    $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+
+} else {
+
+    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +53,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                        <a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>
+                    <?php echo $navbarButton; ?>
                 </form>
             </div>
         </div>
@@ -112,7 +136,7 @@
 </div>
 
     <?php
-        // Połączenie z bazą danych (ustaw odpowiednie dane)
+
         $host = "localhost";
         $username = "root";
         $password = "";
@@ -120,27 +144,27 @@
 
         $mysqli = new mysqli($host, $username, $password, $database);
 
-        // Sprawdzenie połączenia
+
         if ($mysqli->connect_error) {
             die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
         }
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($_POST['action'] == 'firma') {
-            // Dla Firm
+
                 if (isset($_POST["nazwaFirmy"]) && isset($_POST["AdresFirmy"])) {
                     $nazwaFirmy = $_POST['nazwaFirmy'];
                     $hasloFirmy = $_POST['hasloFirmy'];
                     $AdresFirmy = $_POST['AdresFirmy'];
 
-                    // Wykonaj zapytanie SQL do dodania firmy
+
                     $sqlFirma = "INSERT INTO firmy (NazwaFirmy, AdresFirmy) VALUES ('$nazwaFirmy', '$AdresFirmy')";
                     $mysqli->query($sqlFirma);
 
-                    // Pobierz ID firmy
+
                     $idFirmy = $mysqli->insert_id;
 
-                    // Dodaj do kontafirm
+
                     $nazwaUzytkownikaFirma = $_POST["nazwaUzytkownikaFirmy"];
                     $hasloFirma = $_POST["hasloFirmy"];
                     $sqlKontoFirma = "INSERT INTO kontafirm (Firma_id, NazwaUżytkownika, Hasło) VALUES ('$idFirmy', '$nazwaUzytkownikaFirma', '$hasloFirma')";
@@ -148,25 +172,24 @@
                 }
             } elseif ($_POST['action'] == 'uzytkownik') {
 
-            // Dla Użytkowników
+
                 if (isset($_POST["imie"]) && isset($_POST["nazwisko"]) && isset($_POST["Email"])) {
                     $imie = $_POST["imie"];
                     $nazwisko = $_POST["nazwisko"];
                     $email = $_POST["Email"];
                     $haslo = $_POST["Haslo"];
 
-                    // Wykonaj zapytanie SQL do dodania użytkownika
+
                     $sqlUzytkownik = "INSERT INTO użytkownicy (Imię, Nazwisko, Email, Haslo) VALUES ('$imie', '$nazwisko', '$email', '$haslo')";
                     $mysqli->query($sqlUzytkownik);
 
-                    // Pobierz ID użytkownika
+
                     $idUzytkownika = $mysqli->insert_id;
                 }
 
             }
         }
 
-        // Zamknij połączenie
         $mysqli->close();
     ?>
 

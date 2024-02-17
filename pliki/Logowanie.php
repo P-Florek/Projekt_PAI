@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "bazaprojekt";
+
+$mysqli = new mysqli($host, $username, $password, $database);
+
+if ($mysqli->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+}
+
+
+if (isset($_SESSION["current_user"])) {
+    $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+
+} else {
+
+    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +53,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                        <a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>
+                    <?php echo $navbarButton; ?>
                 </form>
             </div>
         </div>
@@ -141,61 +165,75 @@
 </html>
 
 <?php
-    ob_start(); // Rozpocznij buforowanie wyjścia
+ob_start();
 
-    // Połączenie z bazą danych (ustaw odpowiednie dane)
-    $host = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "bazaprojekt";
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "bazaprojekt";
 
-    $mysqli = new mysqli($host, $username, $password, $database);
+$mysqli = new mysqli($host, $username, $password, $database);
 
-    // Sprawdzenie połączenia
-    if ($mysqli->connect_error) {
-        die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
-    }
+if ($mysqli->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+}
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_POST['action'])) {
-            if ($_POST['action'] == 'firma') {
-                // Dla Firm
-                $nazwaFirmy = $_POST['nazwa'];
-                $hasloFirmy = $_POST['haslo'];
 
-                // Zapytanie SQL do pobrania danych firmy
-                $sqlFirma = "SELECT * FROM kontafirm WHERE NazwaUżytkownika='$nazwaFirmy' AND Hasło='$hasloFirmy'";
-                $resultFirma = $mysqli->query($sqlFirma);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['action'])) {
+        if ($_POST['action'] == 'firma') {
+            $nazwaFirmy = $_POST['nazwa'];
+            $hasloFirmy = $_POST['haslo'];
 
-                if ($resultFirma->num_rows > 0) {
-                    // Zalogowano pomyślnie dla firmy
-                    // Możesz przekierować użytkownika do odpowiedniej strony
+            $sqlFirma = "SELECT Firma_id FROM kontafirm WHERE NazwaUżytkownika='$nazwaFirmy' AND Hasło='$hasloFirmy'";
+            $resultFirma = $mysqli->query($sqlFirma);
+
+            if ($resultFirma->num_rows > 0) {
+                $row = $resultFirma->fetch_assoc();
+                $userId = $row['Firma_id'];
+                
+                $_SESSION["current_user"] = $userId;
+                session_start();
+                
+                if (isset($_SESSION["current_user"])){
+                    echo "zalogowano";
                     echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
-                    exit(); // Upewnij się, że po przekierowaniu nie wykonuje się więcej kodu
+                    //exit();
                 } else {
                     echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
                 }
-            } elseif ($_POST['action'] == 'uzytkownik') {
-                // Dla Użytkowników
-                $email = $_POST['Email'];
-                $haslo = $_POST['Haslo'];
-
-                // Zapytanie SQL do pobrania danych użytkownika
-                $sqlUzytkownik = "SELECT * FROM użytkownicy WHERE Email='$email' AND Haslo='$haslo'";
-                $resultUzytkownik = $mysqli->query($sqlUzytkownik);
-
-                if ($resultUzytkownik->num_rows > 0) {
-                    // Zalogowano pomyślnie dla użytkownika
-                    // Możesz przekierować użytkownika do odpowiedniej strony
-                    echo "Zalogowano pomyślnie dla użytkownika!";
-                } else {
-                    echo "Błąd logowania dla użytkownika. Sprawdź email i hasło.";
+            } else {
+                if ($_POST['action'] == 'uzytkownik') {
+                    $email = $_POST['Email'];
+                    $haslo = $_POST['Haslo'];
+        
+                    $sqlUzytkownik = "SELECT Uzytkownik_id FROM użytkownicy WHERE Email='$email' AND Hasło='$haslo'";
+                    $resultUzytkownik = $mysqli->query($sqlUzytkownik);
+        
+                    if ($resultUzytkownik->num_rows > 0) {
+                        $row = $resultUzytkownik->fetch_assoc();
+                        $userId = $row['Uzytkownik_id'];
+                        
+                        $_SESSION["current_user"] = $userId;
+                        session_start();
+                        
+                        if (isset($_SESSION["current_user"])){
+                            echo "zalogowano";
+                            echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
+                            //exit();
+                        } else {
+                            echo "Błąd logowania dla firmy. Sprawdź nazwę użytkownika i hasło.";
+                        }
+                    }
                 }
             }
         }
     }
+}
 
-    // Zamknij połączenie
-    $mysqli->close();
-    ob_end_flush(); // Wypisz buforowane dane
+$mysqli->close();
 ?>
+
+
+
+

@@ -1,3 +1,27 @@
+<?php
+session_start();
+
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "bazaprojekt";
+
+$mysqli = new mysqli($host, $username, $password, $database);
+
+if ($mysqli->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+}
+
+
+if (isset($_SESSION["current_user"])) {
+    $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+
+} else {
+
+    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +53,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                        <a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>
+                    <?php echo $navbarButton; ?>
                 </form>
             </div>
         </div>

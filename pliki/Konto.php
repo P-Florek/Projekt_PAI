@@ -1,3 +1,43 @@
+<?php
+session_start();
+
+$host = "localhost";
+$username = "root";
+$password = "";
+$database = "bazaprojekt";
+
+$mysqli = new mysqli($host, $username, $password, $database);
+
+if ($mysqli->connect_error) {
+    die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
+}
+
+if (isset($_SESSION["current_user"])) {
+    $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+
+} else {
+
+    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (isset($_POST['logout'])) {
+
+        session_unset();
+        session_destroy();
+
+
+        echo '<meta http-equiv="refresh" content="0;url=StronaGlowna.php">';
+        exit();
+    }
+}
+
+$mysqli->close();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +72,7 @@
                     </li>
                 </ul>
                 <form class="d-flex">
-                    <button class="btn btn-outline-dark" type="submit">KONTO</button>
+                    <?php echo $navbarButton; ?>
                 </form>
             </div>
         </div>
@@ -58,9 +98,9 @@
                         </button>
                     </div>
                     <div class="mb-3 col-md-6 d-grid gap-2">
-                        <button class="btn btn-secondary" type="button">
-                            Wyloguj się
-                        </button>
+                    <form method="post">
+                        <button class="btn btn-secondary" type="submit" name="logout">Wyloguj się</button>
+                    </form>
                     </div>
                 </div>
             </div>
@@ -470,3 +510,4 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-lq0iPhPzGh8a7Xg8r9F6Q8cJqM8S+VvxQuDlEK3U/FO8fgwxRxMlWBRn4Hjd9agl" crossorigin="anonymous"></script>
 </body>
 </html>
+
