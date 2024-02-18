@@ -15,17 +15,9 @@ if ($mysqli->connect_error) {
 
 if (isset($_SESSION["current_user"])) {
     $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
-
-} else {
-
-    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
-}
-
-if (isset($_SESSION["current_firma"])) {
+} else if(isset($_SESSION["current_firma"])){
     $navbarButton = '<a href="KontoFirma.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
-
-} else {
-
+} else{
     $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
 }
 ?>
