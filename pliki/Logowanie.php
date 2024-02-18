@@ -20,6 +20,14 @@ if (isset($_SESSION["current_user"])) {
 
     $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
 }
+
+if (isset($_SESSION["current_firma"])) {
+    $navbarButton = '<a href="KontoFirma.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+
+} else {
+
+    $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+}
 ?>
 
 <!DOCTYPE html>
@@ -192,10 +200,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $row = $resultFirma->fetch_assoc();
                 $userId = $row['Firma_id'];
                 
-                $_SESSION["current_user"] = $userId;
+                $_SESSION["current_firma"] = $userId;
                 session_start();
                 
-                if (isset($_SESSION["current_user"])){
+                if (isset($_SESSION["current_firma"])){
                     echo "zalogowano";
                     echo '<meta http-equiv="refresh" content="0;url=PanelOgloszen.php">';
                     exit();

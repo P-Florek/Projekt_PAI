@@ -12,12 +12,15 @@ if ($mysqli->connect_error) {
     die("Błąd połączenia z bazą danych: " . $mysqli->connect_error);
 }
 
-if (isset($_SESSION["current_user"])) {
+if (isset($_SESSION["current_firma"])) {
     $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
 
 } else {
+
     $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
 }
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -32,137 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
-$userID = $_SESSION["current_user"];  
+$userID = $_SESSION["current_firma"];  
 
-$query = "SELECT imię, nazwisko, DataUrodzenia, Email, NumerTelefonu, ZdjęcieProfilowe, adres, AktualneStanowiskoPracy, opisStanowiskaPracy, Podsumowaniezawodowe, LinkedInProfil, GitHubProfil FROM użytkownicy WHERE Użytkownik_id = $userID";
-$result = $mysqli->query($query);
-
-if ($result->num_rows > 0) {
-    $userData = $result->fetch_assoc();
-
-    $imie = $userData['imię'];
-    $nazwisko = $userData['nazwisko'];
-    $dataUrodzenia = $userData['DataUrodzenia'];
-    $email = $userData['Email'];
-    $nrTel = $userData['NumerTelefonu'];
-    $zdj = $userData['ZdjęcieProfilowe'];
-    $adres = $userData['adres'];
-    $stanowiskoPracy = $userData['AktualneStanowiskoPracy'];
-    $opisStanowiskaPracy = $userData['opisStanowiskaPracy'];
-    $Podsumowaniezawodowe = $userData['Podsumowaniezawodowe'];
-    $LinkedInProfil = $userData['LinkedInProfil'];
-    $ProfilGIT = $userData['GitHubProfil'];
-}
-
-$wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
-$wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
-
-if ($wyksztalcenieResult->num_rows > 0) {
-    $wyksztalcenieData = $wyksztalcenieResult->fetch_assoc();
-
-    $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
-    $lokalizacja = $wyksztalcenieData['Lokalizacja'];
-    $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
-    $kierunek = $wyksztalcenieData['Kierunek'];
-    $okres = $wyksztalcenieData['Okres'];
-} else {
-
-    $insertQuery = "INSERT INTO wykształcenie (Użytkownik_id, NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres) VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
-
-    if ($mysqli->query($insertQuery) === TRUE) {
-
-        $wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
-        $wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
-
-        if ($wyksztalcenieResult->num_rows > 0) {
-            $wyksztalcenieData = $wyksztalcenieResult->fetch_assoc();
-
-            $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
-            $lokalizacja = $wyksztalcenieData['Lokalizacja'];
-            $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
-            $kierunek = $wyksztalcenieData['Kierunek'];
-            $okres = $wyksztalcenieData['Okres'];
-        }
-    } else {
-        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
-    }
-}
-
-$doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
-$doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
-
-if ($doswiadczenieResult->num_rows > 0) {
-    $doswiadczenieData = $doswiadczenieResult->fetch_assoc();
-
-    $stanowisko = $doswiadczenieData['Stanowisko'];
-    $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
-    $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
-    $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
-    $obowiazki = $doswiadczenieData['Obowiązki'];
-} else {
-    $insertQuery = "INSERT INTO doświadczenie (Użytkownik_id, Stanowisko, NazwaFirmy, Lokalizacja, OkresZatrudnienia, Obowiązki) 
-                    VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
-
-    if ($mysqli->query($insertQuery) === TRUE) {
-
-        $doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
-        $doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
-
-        if ($doswiadczenieResult->num_rows > 0) {
-            $stanowisko = $doswiadczenieData['Stanowisko'];
-            $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
-            $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
-            $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
-            $obowiazki = $doswiadczenieData['Obowiązki'];
-        }
-    } else {
-        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
-    }
-}
-
-$umiejetnosciQuery = "SELECT * FROM umiejętności WHERE Użytkownik_id = $userID";
-$umiejetnosciResult = $mysqli->query($umiejetnosciQuery);
-
-$umiejetnosci = array();
-
-if ($umiejetnosciResult->num_rows > 0) {
-    while ($umiejetnoscData = $umiejetnosciResult->fetch_assoc()) {
-        $umiejetnosci[] = $umiejetnoscData['NazwaUmiejętności'];
-    }
-} else {
-    $umiejetnosci[] = "brak";
-
-    $insertQuery = "INSERT INTO umiejętności (Użytkownik_id, NazwaUmiejętności) VALUES ('$userID', 'brak')";
-
-    if ($mysqli->query($insertQuery) === FALSE) {
-        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
-    }
-}
-
-$jezykiQuery = "SELECT * FROM języki WHERE Użytkownik_id = $userID";
-$jezykiResult = $mysqli->query($jezykiQuery);
-
-$jezyki = array();
-
-if ($jezykiResult->num_rows > 0) {
-    while ($jezykData = $jezykiResult->fetch_assoc()) {
-        $jezyki[] = array(
-            'NazwaJęzyka' => $jezykData['NazwaJęzyka'],
-            'PoziomZnajomości' => $jezykData['PoziomZnajomości']
-        );
-    }
-} else {
-    $jezyki[] = array(
-        'NazwaJęzyka' => "brak",
-        'PoziomZnajomości' => "brak"
-    );
-
-    $insertQuery = "INSERT INTO języki (Użytkownik_id, NazwaJęzyka, PoziomZnajomości) VALUES ('$userID', 'brak', 'brak')";
-
-    if ($mysqli->query($insertQuery) === FALSE) {
-        echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
-    }
-}
 
 $mysqli->close();
 ?>
@@ -525,94 +399,10 @@ $mysqli->close();
                 </div>
 
 
-                <div class="row card  card-body mt-4">
-                    <h2>Umiejętności</h2>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="mb-3 col-md-6">
-                                    <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności :</label>
-                                    <label for="nazwaUmiejetnosci" class="form-label" id="nazwaUmiejetnosci">
-                                        <?php
-                                        if ($umiejetnosci[0] !== "brak") {
-                                            echo implode(', ', $umiejetnosci);
-                                        } else {
-                                            echo "Brak umiejętności";
-                                        }
-                                        ?>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <p>
-                            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample6">
-                                Edytuj
-                            </button>
-                        </p>
-                            <div class="collapse" id="collapseExample6">
-                                <div class="card card-body">
-                                    <form method="post" action="edytuj_profil.php">
-                                    <input type="hidden" name="action" value="umiejetnosci">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="nazwaUmiejetnosci" class="form-label">Nazwa Umiejętności</label>
-                                                    <input type="text" class="form-control" id="nazwaUmiejetnosci" name="nazwaUmiejetnoscii" value="<?php echo implode(', ', $umiejetnosci); ?>">
-                                                </div>
-                                            </div>
-       
-                                            <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                </div>
 
 
-                <div class="row card  card-body mt-4">
-                    <h2>Języki</h2>
-                        <div class="col-md-12">
-                            <div class="row">
-                                <?php foreach ($jezyki as $jezyk): ?>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
-                                        <label for="NazwaJezyka" class="form-label" id="NazwaJezyka"><?php echo $jezyk['NazwaJęzyka']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Poziom" class="form-label">Poziom znajomości:</label>
-                                        <label for="Poziom" class="form-label" id="poziomZnajomosci"><?php echo $jezyk['PoziomZnajomości']; ?></label>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                        <p>
-                            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample7" aria-expanded="false" aria-controls="collapseExample7">
-                                Edytuj
-                            </button>
-                        </p>
-                            <div class="collapse" id="collapseExample7">
-                                <div class="card card-body">
-                                    <form method="post" action="edytuj_profil.php">
-                                    <input type="hidden" name="action" value="jezyki">
-                                        <div class="col-md-12">
-                                            <div class="row">
-                                            <?php foreach ($jezyki as $jezyk): ?>
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
-                                                    <input type="text" class="form-control" id="NazwaJezyka" name="NazwaJezykaa" value="<?php echo $jezyk['NazwaJęzyka']; ?>">
-                                                </div>
-                                                <div class="mb-3 col-md-6">
-                                                    <label for="Poziom" class="form-label">Poziom znajomości:</label>
-                                                    <input type="text" class="form-control" id="poziomZnajomosci" name="poziomZnajomoscii" value="<?php echo $jezyk['PoziomZnajomości']; ?>">
-                                                </div>
-                                            <?php endforeach; ?>
-                                            </div>
 
-                                            <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                    </div>
+        
 </div>
 <footer class="container-fluid bg-light text-dark py-5 mt-5 shadow">
     <div class="row">
@@ -658,4 +448,3 @@ $mysqli->close();
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-lq0iPhPzGh8a7Xg8r9F6Q8cJqM8S+VvxQuDlEK3U/FO8fgwxRxMlWBRn4Hjd9agl" crossorigin="anonymous"></script>
 </body>
 </html>
-
