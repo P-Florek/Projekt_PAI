@@ -36,6 +36,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    if ($_POST['action'] == 'danefirma') {
+        $nazwa = $_POST['nazwafirma'];
+        $adres = $_POST['adresfirma'];
+
+        $updateQuery = "UPDATE firmy SET NazwaFirmy='$nazwa', AdresFirmy='$adres' WHERE Firma_id = $_SESSION[current_firma]";
+
+        if ($mysqli->query($updateQuery) === TRUE) {
+            echo '<meta http-equiv="refresh" content="0;url=KontoFirma.php">';
+            exit();
+        } else {
+            echo "Błąd podczas aktualizacji danych: " . $mysqli->error;
+        }
+    }
+
+    if ($_POST['action'] == 'danekontafirmy') {
+        $nazwa = $_POST['nazwauzytkownikafirmy'];
+        $haslo = $_POST['haslouzytkownikafirmy'];
+
+        $updateQuery = "UPDATE kontafirm SET NazwaUżytkownika='$nazwa', Hasło='$haslo' WHERE Firma_id = $_SESSION[current_firma]";
+
+        if ($mysqli->query($updateQuery) === TRUE) {
+            echo '<meta http-equiv="refresh" content="0;url=KontoFirma.php">';
+            exit();
+        } else {
+            echo "Błąd podczas aktualizacji danych: " . $mysqli->error;
+        }
+    }
+
+
     if ($_POST['action'] == 'kontaktowe') {
         $email = $_POST['email'];
         $nrTel = $_POST['nrtel'];

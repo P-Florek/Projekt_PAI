@@ -38,6 +38,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $userID = $_SESSION["current_firma"];  
 
 
+$query = "SELECT NazwaUżytkownika, Hasło FROM kontafirm WHERE Firma_id = $userID";
+$result = $mysqli->query($query);
+
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+
+    $nazwaUzytkownikaFirmy = $userData['NazwaUżytkownika'];
+    $Haslokontafirmy = $userData['Hasło'];
+}
+
+$query = "SELECT NazwaFirmy, AdresFirmy FROM firmy WHERE Firma_id = $userID";
+$result = $mysqli->query($query);
+
+if ($result->num_rows > 0) {
+    $userData = $result->fetch_assoc();
+
+    $NazwaFirmy = $userData['NazwaFirmy'];
+    $AdresFirmy = $userData['AdresFirmy'];
+}
+
 $mysqli->close();
 ?>
 
@@ -113,48 +133,16 @@ $mysqli->close();
     </div>
 
     <div class="row card  card-body mt-4">
-    <h2>Dane Użytkownika</h2>
+    <h2>Dane Firmy</h2>
         <div class="col-md-12">
             <div class="row">
                 <div class="mb-3 col-md-6">
-                    <label for="imie" class="form-label">Imię :</label>
-                    <label for="imie" class="form-label" id="imie"><?php echo $imie; ?></label>
+                    <label for="imie" class="form-label">Nazwa Firmy :</label>
+                    <label for="imie" class="form-label" id="imie"><?php echo $NazwaFirmy; ?></label>
                 </div>
                 <div class="mb-3 col-md-6">
-                    <label for="Nazwisko" class="form-label">Nazwisko :</label>
-                    <label for="Nazwisko" class="form-label" id="nazwisko"><?php echo $nazwisko; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="DataUrodzenia" class="form-label">Data Urodzenia :</label>
-                    <label for="DataUrodzenia" class="form-label" id="DataUrodzenia"><?php echo $dataUrodzenia; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="ZdjecieProfilowe" class="form-label">Zdjecie Profilowe :</label>
-                    <label for="imZdjecieProfiloweie" class="form-label" id="zdj"><?php echo $zdj; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="Adres" class="form-label">Adres :</label>
-                    <label for="Adres" class="form-label" id="adres"><?php echo $adres; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="stanowiskoPracy" class="form-label">Aktualne stanowisko pracy :</label>
-                    <label for="stanowiskoPracy" class="form-label" id="stanowiskoPracy"><?php echo $stanowiskoPracy; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="opisStanowiskaPracy" class="form-label">Opis stanowiska pracy :</label>
-                    <label for="opisStanowiskaPracy" class="form-label" id="opisStanowiskaPracy"><?php echo $opisStanowiskaPracy; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="Podsumowaniezawodowe" class="form-label">Podsumowanie Zawodowe :</label>
-                    <label for="Podsumowaniezawodowe" class="form-label" id="Podsumowaniezawodowe"><?php echo $Podsumowaniezawodowe; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="LinkedInProfil" class="form-label">Linked in profil :</label>
-                    <label for="LinkedInProfil" class="form-label" id="LinkedInProfil"><?php echo $LinkedInProfil; ?></label>
-                </div>
-                <div class="mb-3 col-md-6">
-                    <label for="ProfilGIT" class="form-label">profil GitHub :</label>
-                    <label for="ProfilGIT" class="form-label" id="ProfilGIT"><?php echo $ProfilGIT; ?></label>
+                    <label for="Nazwisko" class="form-label">Adres Firmy :</label>
+                    <label for="Nazwisko" class="form-label" id="nazwisko"><?php echo $AdresFirmy; ?></label>
                 </div>
             </div>
         </div>
@@ -166,50 +154,18 @@ $mysqli->close();
         <div class="collapse" id="collapseExample2">
             <div class="card card-body">
                 <form action="edytuj_profil.php" method="post">
-                <input type="hidden" name="action" value="personalne">
+                <input type="hidden" name="action" value="danefirma">
                     <div class="col-md-12">
                         <div class="row">
                                 <div class="mb-3 col-md-6">
-                                    <label for="imie" class="form-label">Imię</label>
-                                    <input type="text" class="form-control" id="imie" name='imie' value="<?php echo $imie; ?>">
+                                    <label for="imie" class="form-label">Nazwa Firmy :</label>
+                                    <input type="text" class="form-control" id="imie" name='nazwafirma' value="<?php echo $NazwaFirmy; ?>">
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="nazwisko" class="form-label">Nazwisko</label>
-                                    <input type="text" class="form-control" id="nazwisko" name='nazwisko' value="<?php echo $nazwisko; ?>">
+                                    <label for="nazwisko" class="form-label">Nazwa Firmy :</label>
+                                    <input type="text" class="form-control" id="nazwisko" name='adresfirma' value="<?php echo $AdresFirmy; ?>">
                                 </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="dataUrodzenia" class="form-label">Data Urodzenia</label>
-                                    <input type="date" class="form-control" id="DataUrodzenia" name='DataUrodzenia' value="<?php echo $dataUrodzenia; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="zdj" class="form-label">Zdjecie Profilowe</label>
-                                    <input type="text" class="form-control" id="zdj" name='zdj' value="<?php echo $zdj; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="adres" class="form-label">Adres</label>
-                                    <input type="text" class="form-control" id="adres" name='adres' value="<?php echo $adres; ?>">
-                                </div>
-
-                                <div class="mb-3 col-md-6">
-                                    <label for="stanowiskoPracy" class="form-label">Aktualne stanowisko pracy</label>
-                                    <input type="text" class="form-control" id="stanowiskoPracy" name='stanowiskoPracy' value="<?php echo $stanowiskoPracy; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="opisStanowiskaPracy" class="form-label">Opis stanowiska pracy</label>
-                                    <input type="text" class="form-control" id="opisStanowiskaPracy" name='opisStanowiskaPracy' value="<?php echo $opisStanowiskaPracy; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="Podsumowaniezawodowe" class="form-label">Podsumowanie Zawodowe</label>
-                                    <input type="text" class="form-control" id="Podsumowaniezawodowe" name='Podsumowaniezawodowe' value="<?php echo $Podsumowaniezawodowe; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="LinkedInProfil" class="form-label">Linked in profil</label>
-                                    <input type="text" class="form-control" id="LinkedInProfil" name='LinkedInProfil' value="<?php echo $LinkedInProfil; ?>">
-                                </div>
-                                <div class="mb-3 col-md-6">
-                                    <label for="ProfilGIT" class="form-label">profil GitHub</label>
-                                    <input type="text" class="form-control" id="ProfilGIT" name='ProfilGIT' value="<?php echo $ProfilGIT; ?>">
-                                </div>
+                                
                             </div>
     
                             <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
@@ -223,16 +179,16 @@ $mysqli->close();
 
 
     <div class="row card  card-body mt-4">
-        <h2>Dane Kontaktowe</h2>
+        <h2>Dane Konta</h2>
             <div class="col-md-12">
                 <div class="row">
                     <div class="mb-3 col-md-6">
-                        <label for="Email" class="form-label">Email :</label>
-                        <label for="Email" class="form-label" id="Email"><?php echo $email; ?></label>
+                        <label for="Email" class="form-label">Nazwa Użytkownika :</label>
+                        <label for="Email" class="form-label" id="Email"><?php echo $nazwaUzytkownikaFirmy; ?></label>
                     </div>
                     <div class="mb-3 col-md-6">
-                        <label for="Nrtel" class="form-label">Numer telefonu :</label>
-                        <label for="Nrtel" class="form-label" id="numerTelefonu"><?php echo $nrTel; ?></label>
+                        <label for="Nrtel" class="form-label">Hasło :</label>
+                        <label for="Nrtel" class="form-label" id="numerTelefonu"><?php echo $Haslokontafirmy; ?></label>
                     </div>
                 </div>
             </div>
@@ -244,16 +200,16 @@ $mysqli->close();
                 <div class="collapse" id="collapseExample3">
                     <div class="card card-body">
                         <form method="post" action="edytuj_profil.php">
-                        <input type="hidden" name="action" value="kontaktowe">
+                        <input type="hidden" name="action" value="danekontafirmy">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="mb-3 col-md-6">
-                                        <label for="Email" class="form-label">Email</label>
-                                        <input type="text" class="form-control" id="Email" name="email" value="<?php echo $email; ?>">
+                                        <label for="Email" class="form-label">Nazwa Użytkownika :</label>
+                                        <input type="text" class="form-control" id="Email" name="nazwauzytkownikafirmy" value="<?php echo $nazwaUzytkownikaFirmy; ?>">
                                     </div>
                                     <div class="mb-3 col-md-6">
-                                        <label for="numerTelefonu" class="form-label">Numer telefonu</label>
-                                        <input type="text" class="form-control" id="numerTelefonu" name="nrtel" value="<?php echo $nrTel; ?>">
+                                        <label for="numerTelefonu" class="form-label">Hasło :</label>
+                                        <input type="text" class="form-control" id="numerTelefonu" name="haslouzytkownikafirmy" value="<?php echo $Haslokontafirmy; ?>">
                                     </div>
                                 </div>
 
@@ -263,144 +219,6 @@ $mysqli->close();
                     </div>
                 </div>
         </div>
-
-    
-
-        <div class="row card  card-body mt-4">
-            <h2>Wykształcenie</h2>
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="mb-3 col-md-6">
-                            <label for="NazwaSzkoly" class="form-label">Nazwa szkoły/Uczelni :</label>
-                            <label for="NazwaSzkoly" class="form-label" id="NazwaSzkoly"><?php echo $nazwaSzkolyUczelni; ?></label>
-                        </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="Lokalizacja" class="form-label">Lokalizacja :</label>
-                            <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $lokalizacja; ?></label>
-                        </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="PoziomWyksztalcenia" class="form-label">Poziom Wykształcenia :</label>
-                            <label for="PoziomWyksztalcenia" class="form-label" id="PoziomWyksztalcenia"><?php echo $poziomWyksztalcenia; ?></label>
-                        </div>
-                        <div class="mb-3 col-md-6">
-                            <label for="Kierunek" class="form-label">Kierunek :</label>
-                            <label for="Kierunek" class="form-label" id="Kierunek"><?php echo $kierunek; ?></label>
-                        </div>
-                        <div class="mb-3 col-md-12">
-                            <label for="Okres" class="form-label">Okres :</label>
-                            <label for="Okres" class="form-label" id="Okres"><?php echo $okres; ?></label>
-                        </div>
-                    </div>
-                </div>
-                <p>
-                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample4">
-                        Edytuj
-                    </button>
-                </p>
-                    <div class="collapse" id="collapseExample4">
-                        <div class="card card-body">
-                        <form method="post" action="edytuj_profil.php">
-                            <input type="hidden" name="action" value="wyksztalcenie">
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="mb-3 col-md-6">
-                                            <label for="NazwaSzkoly" class="form-label">Nazwa szkoły/Uczelni</label>
-                                            <input type="text" class="form-control" id="NazwaSzkoly" name="nazwaSzkoly" value="<?php echo $nazwaSzkolyUczelni; ?>">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                            <input type="text" class="form-control" id="okalizacja" name="Lokalizacja" value="<?php echo $lokalizacja; ?>">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label for="PoziomWyksztalcenia" class="form-label">Poziom Wykształcenia</label>
-                                            <input type="text" class="form-control" id="oziomWyksztalcenia" name="PoziomWyksztalcenia" value="<?php echo $poziomWyksztalcenia; ?>">
-                                        </div>
-                                        <div class="mb-3 col-md-6">
-                                            <label for="Kierunek" class="form-label">Kierunek</label>
-                                            <input type="text" class="form-control" id="ierunek" name="Kierunek" value="<?php echo $kierunek; ?>">
-                                        </div>
-                                        <div class="mb-3 col-md-12">
-                                            <label for="Okres" class="form-label">Okres</label>
-                                            <input type="text" class="form-control" id="kres" name="Okres" value="<?php echo $okres; ?>">
-                                        </div>
-                                    </div>
-                    
-                                    <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-            </div>
-
-            <div class="row card  card-body mt-4">
-                <h2>Doświadczenie</h2>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="mb-3 col-md-6">
-                                <label for="Stanowisko" class="form-label">Stanowisko :</label>
-                                <label for="Stanowisko" class="form-label" id="stanowiska"><?php echo $stanowisko; ?></label>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="NazwaFirmy" class="form-label">Nazwa Firmy :</label>
-                                <label for="NazwaFirmy" class="form-label" id="NazwaFirmy"><?php echo $nazwaFirmy; ?></label>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="Lokalizacja" class="form-label">Lokalizacja :</label>
-                                <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $lokalizacjaDoswiadczenia; ?></label>
-                            </div>
-                            <div class="mb-3 col-md-6">
-                                <label for="Okres" class="form-label">Okres Zatrudnienia :</label>
-                                <label for="Okres" class="form-label" id="Okres"><?php echo $okresZatrudnienia; ?></label>
-                            </div>
-                            <div class="mb-3 col-md-12">
-                                <label for="Obowiązki" class="form-label">Obowiązki :</label>
-                                <label for="Obowiązki" class="form-label" id="Obowiazki"><?php echo $obowiazki; ?></label>
-                            </div>
-                        </div>
-                    </div>
-                    <p>
-                        <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample5">
-                            Edytuj
-                        </button>
-                    </p>
-                        <div class="collapse" id="collapseExample5">
-                            <div class="card card-body">
-                                <form method="post" action="edytuj_profil.php">
-                                <input type="hidden" name="action" value="doswiadczenie">
-                                    <div class="col-md-12">
-                                        <div class="row">
-                                            <div class="mb-3 col-md-6">
-                                                <label for="stanowiska" class="form-label">Stanowisko</label>
-                                                <input type="text" class="form-control" id="stanowiska" name="stanowiskaa" value="<?php echo $stanowisko; ?>">
-                                            </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label for="NazwaFirmy" class="form-label">Nazwa Firmy</label>
-                                                <input type="text" class="form-control" id="NazwaFirmy" name="NazwaFirmyy" value="<?php echo $nazwaFirmy; ?>">
-                                            </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label for="Lokalizacja" class="form-label">Lokalizacja</label>
-                                                <input type="text" class="form-control" id="Lokalizacja" name="Lokalizacjaa" value="<?php echo $lokalizacjaDoswiadczenia; ?>">
-                                            </div>
-                                            <div class="mb-3 col-md-6">
-                                                <label for="Okres" class="form-label">Okres Zatrudnienia</label>
-                                                <input type="text" class="form-control" id="Okres" name="Okress" value="<?php echo $okresZatrudnienia; ?>">
-                                            </div>
-                                            <div class="mb-3 col-md-12">
-                                                <label for="Obowiązki" class="form-label">Obowiązki</label>
-                                                <input type="text" class="form-control" id="Obowiazki" name="Obowiazkii" value="<?php echo $obowiazki; ?>">
-                                            </div>
-                                        </div>
-       
-                                        <button type="submit" class="btn btn-secondary">Zapisz Zmiany</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                </div>
-
-
-
-
 
         
 </div>
