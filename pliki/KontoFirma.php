@@ -221,6 +221,41 @@ $mysqli->close();
                 </div>
         </div>
 
+        <div class="row card  card-body mt-4">
+        <h2>Ogloszenia firmy </h2>
+            <?php
+                $host = "localhost";
+                $username = "root";
+                $password = "";
+                $database = "bazaprojekt";
+
+                $mysqli = new mysqli($host, $username, $password, $database);
+
+                $zapytanie = "SELECT * FROM ogłoszeniapracy WHERE Firma_id = $userID";
+                $wyniki = $mysqli->query($zapytanie);
+
+                while ($ogloszenie = $wyniki->fetch_assoc()) {
+                    echo '<div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">' . $ogloszenie['NazwaStanowiska'] . '</h5>
+                                <p class="card-text">' . $ogloszenie['OpisStanowiska'] . '</p>
+                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                                    Zobacz szczegóły
+                                </a>
+                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                                    Edytuj ogłoszenie
+                                </a>
+                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                                    Usuń ogłoszenie
+                                </a>
+                            </div>
+                        </div>';
+                }
+                $wyniki->free_result();
+
+            ?>
+        </div>
+
         
 </div>
 <footer class="container-fluid bg-light text-dark py-5 mt-5 shadow">
