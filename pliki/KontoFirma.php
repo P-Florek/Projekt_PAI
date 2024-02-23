@@ -13,7 +13,7 @@ if ($mysqli->connect_error) {
 }
 
 if (isset($_SESSION["current_firma"])) {
-    $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+    $navbarButton = '<a href="KontoFirma.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
 
 } else {
 
@@ -99,6 +99,7 @@ $mysqli->close();
                 <form class="d-flex">
                     <?php echo $navbarButton; ?>
                 </form>
+                
             </div>
         </div>
     </nav>

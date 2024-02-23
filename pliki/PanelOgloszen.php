@@ -14,10 +14,13 @@ if ($mysqli->connect_error) {
 
 if (isset($_SESSION["current_user"])) {
     $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+    $navbarButtonDodajOgloszenie = null;
 } else if(isset($_SESSION["current_firma"])){
     $navbarButton = '<a href="KontoFirma.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+    $navbarButtonDodajOgloszenie = '<a href="DodajOgloszenie.php" role="button" class="btn btn-outline" type="submit">DODAJ SWOJE OGŁOSZENIE</a>';
 } else{
     $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+    $navbarButtonDodajOgloszenie = null;
 }
 ?>
 
@@ -51,6 +54,9 @@ if (isset($_SESSION["current_user"])) {
                         <a class="nav-link" href="polityka.php">Polityka prywatności</a>
                     </li>
                 </ul>
+                <form class="d-flex">
+                    <?php echo $navbarButtonDodajOgloszenie; ?>
+                </form>
                 <form class="d-flex">
                     <?php echo $navbarButton; ?>
                 </form>
@@ -115,29 +121,41 @@ if (isset($_SESSION["current_user"])) {
         </div>
 
         <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
-                    <img src="../Grafiki/zdjecieOgloszenie.jpg" class="card-img-top" alt="Sample Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Tytuł ogłoszenia</h5>
-                        <p class="card-text">Opis ogłoszenia. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <a href="StronaOgloszenia.php" role="button" class="btn btn-secondary">
-                            Zobacz szczegóły
-                        </a>
-                    </div>
-                </div>
+        <?php
 
-                <div class="card mb-4">
-                    <img src="../Grafiki/zdjecieOgloszenie.jpg" class="card-img-top" alt="Sample Image">
-                    <div class="card-body">
-                        <h5 class="card-title">Tytuł ogłoszenia</h5>
-                        <p class="card-text">Opis ogłoszenia. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Zobacz szczegóły
-                        </button>
-                    </div>
-                </div>
-            </div>
+            $ogloszeniaQuery = "SELECT * FROM ogłoszeniapracy";
+            $ogloszeniaResult = $mysqli->query($ogloszeniaQuery);
+
+            if ($ogloszeniaResult->num_rows > 0) {
+
+                while ($row = $ogloszeniaResult->fetch_assoc()) {
+                    $idogloszenie = $row['ogłoszenie_id'];
+                    $tytulOgloszenia = $row['NazwaStanowiska'];
+                    $opisOgloszenia = $row['OpisStanowiska'];
+                    $zdjecieOgloszenia = $row['Zdjecie'];
+
+
+                    echo '<div class="col-lg-8">
+                            <div class="card mb-4">
+                                <img src="' . $zdjecieOgloszenia . '" class="card-img-top" alt="Ogłoszenie">
+                                <div class="card-body">
+                                    <h5 class="card-title">' . $tytulOgloszenia . '</h5>
+                                    <p class="card-text">' . $opisOgloszenia . '</p>
+                                    <a href="StronaOgloszenia.php?id=' . $idogloszenie . '" role="button" class="btn btn-secondary">
+                                        Zobacz szczegóły
+                                    </a>
+                                </div>
+                            </div>
+                        </div>';
+                }
+            } else {
+                echo "Brak dostępnych ogłoszeń.";
+            }
+
+            $ogloszeniaResult->free_result();
+        ?>
+            
+
             
             <div class="col-lg-4">
                 <div class="card">
