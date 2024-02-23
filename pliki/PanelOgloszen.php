@@ -67,44 +67,58 @@ if (isset($_SESSION["current_user"])) {
         <div class="row card  card-body mt-4">
         </div>
     </div>
-    
+
+    <?php 
+        $kategoria = $_GET['category'] ?? 'Wszystkie';
+        $sortowanie = $_GET['sorting'] ?? 'Wszystkie';
+        $zdalnaPraca = $_GET['zdalna'] ?? 'Wszystkie';
+        $rodzajUmowy = $_GET['rodzajUmowy'] ?? 'Wszystkie';
+    ?>
+
     <div class="container mt-5">
-
-        <div class="row mb-3">
-            <div class="col-md-3">
-                <label for="category">Kategoria:</label>
-                <select class="form-select" id="category">
-                    <option selected>Wszystkie</option>
-                    <option value="motoryzacja">Motoryzacja</option>
-                    <option value="nieruchomosci">Nieruchomości</option>
-
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="sorting">Sortowanie:</label>
-                <select class="form-select" id="sorting">
-                    <option selected>Najnowsze</option>
-                    <option value="najtansze">Najtańsze</option>
-                    <option value="najdrozsze">Najdroższe</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="sorting">Praca zdalna:</label>
-                <select class="form-select" id="zdalna">
-                    <option selected>TAK</option>
-                    <option value="nie">NIE</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label for="sorting">Rodzaj umowy:</label>
-                <select class="form-select" id="rodzajUmowy">
-                    <option selected>na czas określony</option>
-                    <option value="okresProbny">okres próbny</option>
-                    <option value="czasnieokreslony">na czas nieokreślony</option>
-                </select>
-            </div>
+    <form method="get" action="PanelOgloszen.php">
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <label for="category">Kategoria:</label>
+            <select class="form-select" name="category" id="category">
+                <option value="Wszystkie" <?php echo ($kategoria == 'Wszystkie') ? 'selected' : ''; ?>>Wszystkie</option>
+                <option value="inzynieria" <?php echo ($kategoria == 'inzynieria') ? 'selected' : ''; ?>>Inżynieria</option>
+                <option value="mechanika" <?php echo ($kategoria == 'mechanika') ? 'selected' : ''; ?>>Mechanika</option>
+                <option value="medycyna" <?php echo ($kategoria == 'medycyna') ? 'selected' : ''; ?>>Medycyna</option>
+                <option value="informatyka" <?php echo ($kategoria == 'informatyka') ? 'selected' : ''; ?>>Informatyka</option>
+            </select>
         </div>
-
+        <div class="col-md-2">
+            <label for="sorting">Sortowanie:</label>
+            <select class="form-select" name="sorting">
+                <option value="Wszystkie" <?php echo ($sortowanie == 'Wszystkie') ? 'selected' : ''; ?>>Wszystkie</option>
+                <option value="najnowsze" <?php echo ($sortowanie == 'najnowsze') ? 'selected' : ''; ?>>Najnowsze</option>
+                <option value="najtansze" <?php echo ($sortowanie == 'najtansze') ? 'selected' : ''; ?>>Najtańsze</option>
+                <option value="najdrozsze" <?php echo ($sortowanie == 'najdrozsze') ? 'selected' : ''; ?>>Najdroższe</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="zdalna">Praca zdalna:</label>
+            <select class="form-select" name="zdalna">
+                <option value="Wszystkie" <?php echo ($zdalnaPraca == 'Wszystkie') ? 'selected' : ''; ?>>Wszystkie</option>
+                <option value="TAK" <?php echo ($zdalnaPraca == 'TAK') ? 'selected' : ''; ?>>TAK</option>
+                <option value="NIE" <?php echo ($zdalnaPraca == 'NIE') ? 'selected' : ''; ?>>NIE</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="rodzajUmowy">Rodzaj umowy:</label>
+            <select class="form-select" name="rodzajUmowy">
+                <option value="Wszystkie" <?php echo ($rodzajUmowy == 'Wszystkie') ? 'selected' : ''; ?>>Wszystkie</option>
+                <option value="NaCzasOkreslony" <?php echo ($rodzajUmowy == 'NaCzasOkreslony') ? 'selected' : ''; ?>>NaCzasOkreslony</option>
+                <option value="NaCzasNieokreslony" <?php echo ($rodzajUmowy == 'NaCzasNieokreslony') ? 'selected' : ''; ?>>NaCzasNieokreslony</option>
+                <option value="OkresProbny" <?php echo ($rodzajUmowy == 'OkresProbny') ? 'selected' : ''; ?>>OkresProbny</option>
+            </select>
+        </div>
+        <div class="col-md-4 d-grid gap-2">
+            <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Filtruj</button>
+        </div>
+    </div>
+</form>
         <div class="row mb-3">
             <form class="form-inline row mb">
                 <div class="col-md-10">
@@ -121,42 +135,54 @@ if (isset($_SESSION["current_user"])) {
         </div>
 
         <div class="row">
+        <div class="col-lg-8">
+        
+            
         <?php
+            $zapytanie = "SELECT * FROM ogłoszeniapracy WHERE 1";
 
-            $ogloszeniaQuery = "SELECT * FROM ogłoszeniapracy";
-            $ogloszeniaResult = $mysqli->query($ogloszeniaQuery);
-
-            if ($ogloszeniaResult->num_rows > 0) {
-
-                while ($row = $ogloszeniaResult->fetch_assoc()) {
-                    $idogloszenie = $row['ogłoszenie_id'];
-                    $tytulOgloszenia = $row['NazwaStanowiska'];
-                    $opisOgloszenia = $row['OpisStanowiska'];
-                    $zdjecieOgloszenia = $row['Zdjecie'];
-
-
-                    echo '<div class="col-lg-8">
-                            <div class="card mb-4">
-                                <img src="' . $zdjecieOgloszenia . '" class="card-img-top" alt="Ogłoszenie">
-                                <div class="card-body">
-                                    <h5 class="card-title">' . $tytulOgloszenia . '</h5>
-                                    <p class="card-text">' . $opisOgloszenia . '</p>
-                                    <a href="StronaOgloszenia.php?id=' . $idogloszenie . '" role="button" class="btn btn-secondary">
-                                        Zobacz szczegóły
-                                    </a>
-                                </div>
-                            </div>
-                        </div>';
-                }
-            } else {
-                echo "Brak dostępnych ogłoszeń.";
+            if ($kategoria != 'Wszystkie') {
+                $zapytanie .= " AND Kategoria = '$kategoria'";
             }
 
-            $ogloszeniaResult->free_result();
-        ?>
-            
+            if ($zdalnaPraca != 'Wszystkie') {
+                $zapytanie .= " AND PracaZdalna = 'TAK'";
+            }
 
-            
+            if ($rodzajUmowy != 'Wszystkie') {
+                $zapytanie .= " AND RodzajUmowy = '$rodzajUmowy'";
+            }
+
+            if ($sortowanie == 'Wszystkie') {
+                $zapytanie .= " ORDER BY WidełkiWynagrodzenia ASC";
+            } elseif ($sortowanie == 'najdrozsze') {
+                $zapytanie .= " ORDER BY WidełkiWynagrodzenia DESC";
+            } else {
+                //$zapytanie .= " ORDER BY DataDodania DESC";
+            }
+
+
+            $wyniki = $mysqli->query($zapytanie);
+
+
+            while ($ogloszenie = $wyniki->fetch_assoc()) {
+
+                echo '<div class="card mb-4">
+                        <img src="' . $ogloszenie['Zdjecie'] . '" class="card-img-top" alt="Ogłoszenie">
+                        <div class="card-body">
+                            <h5 class="card-title">' . $ogloszenie['NazwaStanowiska'] . '</h5>
+                            <p class="card-text">' . $ogloszenie['OpisStanowiska'] . '</p>
+                            <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                                Zobacz szczegóły
+                            </a>
+                        </div>
+                    </div>';
+            }
+
+
+            $wyniki->free_result();
+            ?>
+            </div>
             <div class="col-lg-4">
                 <div class="card">
                     <div class="card-body">
@@ -187,6 +213,8 @@ if (isset($_SESSION["current_user"])) {
                     </div>
                 </div>
             </div>
+            
+            
         </div>
     </div>
 
