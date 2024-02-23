@@ -73,6 +73,8 @@ if (isset($_SESSION["current_user"])) {
         $sortowanie = $_GET['sorting'] ?? 'Wszystkie';
         $zdalnaPraca = $_GET['zdalna'] ?? 'Wszystkie';
         $rodzajUmowy = $_GET['rodzajUmowy'] ?? 'Wszystkie';
+
+        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
     ?>
 
     <div class="container mt-5">
@@ -119,20 +121,16 @@ if (isset($_SESSION["current_user"])) {
         </div>
     </div>
 </form>
-        <div class="row mb-3">
-            <form class="form-inline row mb">
-                <div class="col-md-10">
-                    
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj ogłoszenia ..." aria-label="Search">
-
-                </div>
-                <div class="col-md-2 d-grid gap-2">
-
-                    <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Szukaj</button>
-
-                </div>
-            </form>
-        </div>
+    <div class="row mb-3">
+        <form class="form-inline row mb" method="get" action="PanelOgloszen.php">
+            <div class="col-md-10">
+                <input class="form-control mr-sm-2" type="search" placeholder="Szukaj ogłoszenia..." aria-label="Search" name="search" value="<?php echo $searchQuery; ?>">
+            </div>
+            <div class="col-md-2 d-grid gap-2">
+                <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Szukaj</button>
+            </div>
+        </form>
+    </div>
 
         <div class="row">
         <div class="col-lg-8">
@@ -146,11 +144,15 @@ if (isset($_SESSION["current_user"])) {
             }
 
             if ($zdalnaPraca != 'Wszystkie') {
-                $zapytanie .= " AND PracaZdalna = 'TAK'";
+                $zapytanie .= " AND PracaZdalna = 'NIE'";
             }
 
             if ($rodzajUmowy != 'Wszystkie') {
                 $zapytanie .= " AND RodzajUmowy = '$rodzajUmowy'";
+            }
+
+            if (!empty($searchQuery)) {
+                $zapytanie .= " AND (NazwaStanowiska LIKE '%$searchQuery%' OR OpisStanowiska LIKE '%$searchQuery%')";
             }
 
             if ($sortowanie == 'Wszystkie') {
