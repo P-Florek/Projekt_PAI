@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $nazwaFirmy = $_POST['nazwa'];
             $hasloFirmy = $_POST['haslo'];
 
-            $sqlFirma = "SELECT Firma_id FROM kontafirm WHERE NazwaUżytkownika='$nazwaFirmy' AND Hasło='$hasloFirmy'";
+            $sqlFirma = "SELECT Firma_id FROM kontafirm WHERE NazwaUzytkownika='$nazwaFirmy' AND Haslo='$hasloFirmy'";
             $resultFirma = $mysqli->query($sqlFirma);
 
             if ($resultFirma->num_rows > 0) {
@@ -214,7 +214,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if ($resultUzytkownik->num_rows > 0) {
             $row = $resultUzytkownik->fetch_assoc();
-            $userId = $row['Użytkownik_id'];
+            $userId = $row['Uzytkownik_id'];
             
             $_SESSION["current_user"] = $userId;
             session_start();

@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $Oferty = $_POST['oferty'];
             $Zdjecie = $_POST['zdj'];
     
-            $updateQuery = "INSERT INTO `ogłoszeniapracy`(`Firma_id`, `NazwaStanowiska`, `PoziomZatrudnienia`, `RodzajUmowy`, `RodzajPracy`, `PracaZdalna`, `WidełkiWynagrodzenia`, `DniPracy`, `GodzinyPracy`, `DataWygaśnięcia`, `Kategoria`, `OpisStanowiska`, `Wymagania`, `Oferty`, `Zdjecie`) VALUES 
+            $updateQuery = "INSERT INTO `ogloszeniapracy`(`Firma_id`, `NazwaStanowiska`, `PoziomZatrudnienia`, `RodzajUmowy`, `RodzajPracy`, `PracaZdalna`, `WidelkiWynagrodzenia`, `DniPracy`, `GodzinyPracy`, `DataWygasniecia`, `Kategoria`, `OpisStanowiska`, `Wymagania`, `Oferty`, `Zdjecie`) VALUES 
             ('$userID','$NazwaStanowiska','$PoziomZatrudnienia','$RodzajUmowy','$RodzajPracy','$PracaZdalna','$WidełkiWynagrodzenia','$DniPracy','$GodzinyPracy','$DataWygaśnięcia','$Kategoria','$OpisStanowiska','$Wymagania','$Oferty','$Zdjecie')";
     
             if ($mysqli->query($updateQuery) === TRUE) {

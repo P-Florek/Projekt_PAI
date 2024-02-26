@@ -38,14 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 $userID = $_SESSION["current_firma"];  
 
 
-$query = "SELECT NazwaUżytkownika, Hasło FROM kontafirm WHERE Firma_id = $userID";
+$query = "SELECT NazwaUzytkownika, Haslo FROM kontafirm WHERE Firma_id = $userID";
 $result = $mysqli->query($query);
 
 if ($result->num_rows > 0) {
     $userData = $result->fetch_assoc();
 
-    $nazwaUzytkownikaFirmy = $userData['NazwaUżytkownika'];
-    $Haslokontafirmy = $userData['Hasło'];
+    $nazwaUzytkownikaFirmy = $userData['NazwaUzytkownika'];
+    $Haslokontafirmy = $userData['Haslo'];
 }
 
 $query = "SELECT NazwaFirmy, AdresFirmy FROM firmy WHERE Firma_id = $userID";
@@ -231,7 +231,7 @@ $mysqli->close();
 
                 $mysqli = new mysqli($host, $username, $password, $database);
 
-                $zapytanie = "SELECT * FROM ogłoszeniapracy WHERE Firma_id = $userID";
+                $zapytanie = "SELECT * FROM ogloszeniapracy WHERE Firma_id = $userID";
                 $wyniki = $mysqli->query($zapytanie);
 
                 while ($ogloszenie = $wyniki->fetch_assoc()) {
@@ -239,14 +239,8 @@ $mysqli->close();
                             <div class="card-body">
                                 <h5 class="card-title">' . $ogloszenie['NazwaStanowiska'] . '</h5>
                                 <p class="card-text">' . $ogloszenie['OpisStanowiska'] . '</p>
-                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
-                                    Zobacz szczegóły
-                                </a>
-                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                                <a href="SzczegolyOgloszenia.php?id=' . $ogloszenie['ogloszenie_id'] . '" role="button" class="btn btn-secondary">
                                     Edytuj ogłoszenie
-                                </a>
-                                <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
-                                    Usuń ogłoszenie
                                 </a>
                             </div>
                         </div>';

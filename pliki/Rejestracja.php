@@ -167,7 +167,7 @@ if (isset($_SESSION["current_user"])) {
 
                     $nazwaUzytkownikaFirma = $_POST["nazwaUzytkownikaFirmy"];
                     $hasloFirma = $_POST["hasloFirmy"];
-                    $sqlKontoFirma = "INSERT INTO kontafirm (Firma_id, NazwaUżytkownika, Hasło) VALUES ('$idFirmy', '$nazwaUzytkownikaFirma', '$hasloFirma')";
+                    $sqlKontoFirma = "INSERT INTO kontafirm (Firma_id, NazwaUzytkownika, Haslo) VALUES ('$idFirmy', '$nazwaUzytkownikaFirma', '$hasloFirma')";
                     $mysqli->query($sqlKontoFirma);
                 }
             } elseif ($_POST['action'] == 'uzytkownik') {
@@ -180,7 +180,7 @@ if (isset($_SESSION["current_user"])) {
                     $haslo = $_POST["Haslo"];
 
 
-                    $sqlUzytkownik = "INSERT INTO użytkownicy (Imię, Nazwisko, Email, Haslo) VALUES ('$imie', '$nazwisko', '$email', '$haslo')";
+                    $sqlUzytkownik = "INSERT INTO uzytkownicy (Imie, Nazwisko, Email, Haslo) VALUES ('$imie', '$nazwisko', '$email', '$haslo')";
                     $mysqli->query($sqlUzytkownik);
 
 

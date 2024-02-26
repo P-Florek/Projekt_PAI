@@ -161,15 +161,14 @@ $ogloszenie = $wynik->fetch_assoc();
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"></h5>
-                            <a href="StronaOgloszenia.html" role="button" class="btn btn-secondary d-grid gap-2">
-                                Aplikuj
+                            <a href="EdytacjaOgloszenia.php" role="button" class="btn btn-secondary d-grid gap-2">
+                                Zapisz
                             </a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-        
 
     </div>
 

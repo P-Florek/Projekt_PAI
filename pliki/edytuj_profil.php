@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $LinkedInProfil = $_POST['LinkedInProfil'];
         $ProfilGIT = $_POST['ProfilGIT'];
 
-        $updateQuery = "UPDATE użytkownicy SET imię='$imie', nazwisko='$nazwisko', DataUrodzenia='$dataUrodzenia', ZdjęcieProfilowe='$zdj', adres='$adres', AktualneStanowiskoPracy='$stanowiskoPracy', opisStanowiskaPracy='$opisStanowiskaPracy', Podsumowaniezawodowe='$Podsumowaniezawodowe', LinkedInProfil='$LinkedInProfil', GitHubProfil='$ProfilGIT' WHERE Użytkownik_id = $_SESSION[current_user]";
+        $updateQuery = "UPDATE uzytkownicy SET imie='$imie', nazwisko='$nazwisko', DataUrodzenia='$dataUrodzenia', ZdjecieProfilowe='$zdj', adres='$adres', AktualneStanowiskoPracy='$stanowiskoPracy', opisStanowiskaPracy='$opisStanowiskaPracy', Podsumowaniezawodowe='$Podsumowaniezawodowe', LinkedInProfil='$LinkedInProfil', GitHubProfil='$ProfilGIT' WHERE Uzytkownik_id = $_SESSION[current_user]";
 
         if ($mysqli->query($updateQuery) === TRUE) {
             echo '<meta http-equiv="refresh" content="0;url=Konto.php">';
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nazwa = $_POST['nazwauzytkownikafirmy'];
         $haslo = $_POST['haslouzytkownikafirmy'];
 
-        $updateQuery = "UPDATE kontafirm SET NazwaUżytkownika='$nazwa', Hasło='$haslo' WHERE Firma_id = $_SESSION[current_firma]";
+        $updateQuery = "UPDATE kontafirm SET NazwaUzytkownika='$nazwa', Haslo='$haslo' WHERE Firma_id = $_SESSION[current_firma]";
 
         if ($mysqli->query($updateQuery) === TRUE) {
             echo '<meta http-equiv="refresh" content="0;url=KontoFirma.php">';
@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $nrTel = $_POST['nrtel'];
 
-        $updateQuery = "UPDATE użytkownicy SET Email='$email', NumerTelefonu='$nrTel' WHERE Użytkownik_id = $_SESSION[current_user]";
+        $updateQuery = "UPDATE uzytkownicy SET Email='$email', NumerTelefonu='$nrTel' WHERE Uzytkownik_id = $_SESSION[current_user]";
 
         if ($mysqli->query($updateQuery) === TRUE) {
             echo '<meta http-equiv="refresh" content="0;url=Konto.php">';
@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $kierunek = $_POST['Kierunek'];
         $okres = $_POST['Okres'];
 
-        $updateQuery = "UPDATE wykształcenie SET NazwaSzkolyUczelni='$nazwaSzkoly', Lokalizacja='$lokalizacja', PoziomWykształcenia='$poziomWyksztalcenia', Kierunek='$kierunek', Okres='$okres' WHERE Użytkownik_id = $_SESSION[current_user]";
+        $updateQuery = "UPDATE wyksztalcenie SET NazwaSzkolyUczelni='$nazwaSzkoly', Lokalizacja='$lokalizacja', PoziomWyksztalcenia='$poziomWyksztalcenia', Kierunek='$kierunek', Okres='$okres' WHERE Uzytkownik_id = $_SESSION[current_user]";
 
         if ($mysqli->query($updateQuery) === TRUE) {
             echo '<meta http-equiv="refresh" content="0;url=Konto.php">';
@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $okresZatrudnienia = $_POST['Okress'];
             $obowiazki = $_POST['Obowiazkii'];
     
-            $updateQuery = "UPDATE doświadczenie SET Stanowisko='$stanowisko', NazwaFirmy='$nazwaFirmy', Lokalizacja='$lokalizacjaDoswiadczenia', OkresZatrudnienia='$okresZatrudnienia', Obowiązki='$obowiazki' WHERE Użytkownik_id = $_SESSION[current_user]";
+            $updateQuery = "UPDATE doswiadczenie SET Stanowisko='$stanowisko', NazwaFirmy='$nazwaFirmy', Lokalizacja='$lokalizacjaDoswiadczenia', OkresZatrudnienia='$okresZatrudnienia', Obowiazki='$obowiazki' WHERE Uzytkownik_id = $_SESSION[current_user]";
     
             if ($mysqli->query($updateQuery) === TRUE) {
                 echo '<meta http-equiv="refresh" content="0;url=Konto.php">';
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($_POST['action'] == 'umiejetnosci') {
             $umiejetnosci = explode(', ', $_POST['nazwaUmiejetnoscii']);
     
-            $updateQuery = "UPDATE umiejętności SET NazwaUmiejętności=CONCAT('$umiejetnosci') WHERE Użytkownik_id = $_SESSION[current_user]";
+            $updateQuery = "UPDATE umiejetnosci SET NazwaUmiejetnosci=CONCAT('$umiejetnosci') WHERE Uzytkownik_id = $_SESSION[current_user]";
     
             if ($mysqli->query($updateQuery) === TRUE) {
                 echo '<meta http-equiv="refresh" content="0;url=Konto.php">';
@@ -139,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $nazwaJezyka = $_POST['NazwaJezykaa'];
         $poziomZnajomosci = $_POST['poziomZnajomoscii'];
 
-        $updateQuery = "UPDATE języki SET NazwaJęzyka='$nazwaJezyka', PoziomZnajomości='$poziomZnajomosci' WHERE Użytkownik_id = $_SESSION[current_user]";
+        $updateQuery = "UPDATE jezyki SET NazwaJezyka='$nazwaJezyka', PoziomZnajomosci='$poziomZnajomosci' WHERE Uzytkownik_id = $_SESSION[current_user]";
 
         if ($mysqli->query($updateQuery) === TRUE) {
             echo '<meta http-equiv="refresh" content="0;url=Konto.php">';

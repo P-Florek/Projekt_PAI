@@ -34,18 +34,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 $userID = $_SESSION["current_user"];  
 
-$query = "SELECT imię, nazwisko, DataUrodzenia, Email, NumerTelefonu, ZdjęcieProfilowe, adres, AktualneStanowiskoPracy, opisStanowiskaPracy, Podsumowaniezawodowe, LinkedInProfil, GitHubProfil FROM użytkownicy WHERE Użytkownik_id = $userID";
+$query = "SELECT imie, nazwisko, DataUrodzenia, Email, NumerTelefonu, ZdjecieProfilowe, adres, AktualneStanowiskoPracy, opisStanowiskaPracy, Podsumowaniezawodowe, LinkedInProfil, GitHubProfil FROM uzytkownicy WHERE Uzytkownik_id = $userID";
 $result = $mysqli->query($query);
 
 if ($result->num_rows > 0) {
     $userData = $result->fetch_assoc();
 
-    $imie = $userData['imię'];
+    $imie = $userData['imie'];
     $nazwisko = $userData['nazwisko'];
     $dataUrodzenia = $userData['DataUrodzenia'];
     $email = $userData['Email'];
     $nrTel = $userData['NumerTelefonu'];
-    $zdj = $userData['ZdjęcieProfilowe'];
+    $zdj = $userData['ZdjecieProfilowe'];
     $adres = $userData['adres'];
     $stanowiskoPracy = $userData['AktualneStanowiskoPracy'];
     $opisStanowiskaPracy = $userData['opisStanowiskaPracy'];
@@ -54,7 +54,7 @@ if ($result->num_rows > 0) {
     $ProfilGIT = $userData['GitHubProfil'];
 }
 
-$wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
+$wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWyksztalcenia, Kierunek, Okres FROM wyksztalcenie WHERE Uzytkownik_id = $userID";
 $wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
 
 if ($wyksztalcenieResult->num_rows > 0) {
@@ -62,16 +62,16 @@ if ($wyksztalcenieResult->num_rows > 0) {
 
     $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
     $lokalizacja = $wyksztalcenieData['Lokalizacja'];
-    $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
+    $poziomWyksztalcenia = $wyksztalcenieData['PoziomWyksztalcenia'];
     $kierunek = $wyksztalcenieData['Kierunek'];
     $okres = $wyksztalcenieData['Okres'];
 } else {
 
-    $insertQuery = "INSERT INTO wykształcenie (Użytkownik_id, NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres) VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
+    $insertQuery = "INSERT INTO wyksztalcenie (Uzytkownik_id, NazwaSzkolyUczelni, Lokalizacja, PoziomWyksztalcenia, Kierunek, Okres) VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
 
     if ($mysqli->query($insertQuery) === TRUE) {
 
-        $wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWykształcenia, Kierunek, Okres FROM wykształcenie WHERE Użytkownik_id = $userID";
+        $wyksztalcenieQuery = "SELECT NazwaSzkolyUczelni, Lokalizacja, PoziomWyksztalcenia, Kierunek, Okres FROM wyksztalcenie WHERE Uzytkownik_id = $userID";
         $wyksztalcenieResult = $mysqli->query($wyksztalcenieQuery);
 
         if ($wyksztalcenieResult->num_rows > 0) {
@@ -79,7 +79,7 @@ if ($wyksztalcenieResult->num_rows > 0) {
 
             $nazwaSzkolyUczelni = $wyksztalcenieData['NazwaSzkolyUczelni'];
             $lokalizacja = $wyksztalcenieData['Lokalizacja'];
-            $poziomWyksztalcenia = $wyksztalcenieData['PoziomWykształcenia'];
+            $poziomWyksztalcenia = $wyksztalcenieData['PoziomWyksztalcenia'];
             $kierunek = $wyksztalcenieData['Kierunek'];
             $okres = $wyksztalcenieData['Okres'];
         }
@@ -88,7 +88,7 @@ if ($wyksztalcenieResult->num_rows > 0) {
     }
 }
 
-$doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
+$doswiadczenieQuery = "SELECT * FROM doswiadczenie WHERE Uzytkownik_id = $userID";
 $doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
 
 if ($doswiadczenieResult->num_rows > 0) {
@@ -98,14 +98,14 @@ if ($doswiadczenieResult->num_rows > 0) {
     $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
     $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
     $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
-    $obowiazki = $doswiadczenieData['Obowiązki'];
+    $obowiazki = $doswiadczenieData['Obowiazki'];
 } else {
-    $insertQuery = "INSERT INTO doświadczenie (Użytkownik_id, Stanowisko, NazwaFirmy, Lokalizacja, OkresZatrudnienia, Obowiązki) 
+    $insertQuery = "INSERT INTO doswiadczenie (Uzytkownik_id, Stanowisko, NazwaFirmy, Lokalizacja, OkresZatrudnienia, Obowiazki) 
                     VALUES ('$userID', 'brak', 'brak', 'brak', 'brak', 'brak')";
 
     if ($mysqli->query($insertQuery) === TRUE) {
 
-        $doswiadczenieQuery = "SELECT * FROM doświadczenie WHERE Użytkownik_id = $userID";
+        $doswiadczenieQuery = "SELECT * FROM doswiadczenie WHERE Uzytkownik_id = $userID";
         $doswiadczenieResult = $mysqli->query($doswiadczenieQuery);
 
         if ($doswiadczenieResult->num_rows > 0) {
@@ -113,33 +113,33 @@ if ($doswiadczenieResult->num_rows > 0) {
             $nazwaFirmy = $doswiadczenieData['NazwaFirmy'];
             $lokalizacjaDoswiadczenia = $doswiadczenieData['Lokalizacja'];
             $okresZatrudnienia = $doswiadczenieData['OkresZatrudnienia'];
-            $obowiazki = $doswiadczenieData['Obowiązki'];
+            $obowiazki = $doswiadczenieData['Obowiazki'];
         }
     } else {
         echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
     }
 }
 
-$umiejetnosciQuery = "SELECT * FROM umiejętności WHERE Użytkownik_id = $userID";
+$umiejetnosciQuery = "SELECT * FROM umiejetnosci WHERE Uzytkownik_id = $userID";
 $umiejetnosciResult = $mysqli->query($umiejetnosciQuery);
 
 $umiejetnosci = array();
 
 if ($umiejetnosciResult->num_rows > 0) {
     while ($umiejetnoscData = $umiejetnosciResult->fetch_assoc()) {
-        $umiejetnosci[] = $umiejetnoscData['NazwaUmiejętności'];
+        $umiejetnosci[] = $umiejetnoscData['NazwaUmiejetnosci'];
     }
 } else {
     $umiejetnosci[] = "brak";
 
-    $insertQuery = "INSERT INTO umiejętności (Użytkownik_id, NazwaUmiejętności) VALUES ('$userID', 'brak')";
+    $insertQuery = "INSERT INTO umiejetnosci (Uzytkownik_id, NazwaUmiejetnosci) VALUES ('$userID', 'brak')";
 
     if ($mysqli->query($insertQuery) === FALSE) {
         echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
     }
 }
 
-$jezykiQuery = "SELECT * FROM języki WHERE Użytkownik_id = $userID";
+$jezykiQuery = "SELECT * FROM jezyki WHERE Uzytkownik_id = $userID";
 $jezykiResult = $mysqli->query($jezykiQuery);
 
 $jezyki = array();
@@ -147,17 +147,17 @@ $jezyki = array();
 if ($jezykiResult->num_rows > 0) {
     while ($jezykData = $jezykiResult->fetch_assoc()) {
         $jezyki[] = array(
-            'NazwaJęzyka' => $jezykData['NazwaJęzyka'],
-            'PoziomZnajomości' => $jezykData['PoziomZnajomości']
+            'NazwaJezyka' => $jezykData['NazwaJezyka'],
+            'PoziomZnajomosci' => $jezykData['PoziomZnajomosci']
         );
     }
 } else {
     $jezyki[] = array(
-        'NazwaJęzyka' => "brak",
-        'PoziomZnajomości' => "brak"
+        'NazwaJezyka' => "brak",
+        'PoziomZnajomosci' => "brak"
     );
 
-    $insertQuery = "INSERT INTO języki (Użytkownik_id, NazwaJęzyka, PoziomZnajomości) VALUES ('$userID', 'brak', 'brak')";
+    $insertQuery = "INSERT INTO jezyki (Uzytkownik_id, NazwaJezyka, PoziomZnajomosci) VALUES ('$userID', 'brak', 'brak')";
 
     if ($mysqli->query($insertQuery) === FALSE) {
         echo "Błąd podczas dodawania rekordu: " . $mysqli->error;
@@ -575,11 +575,11 @@ $mysqli->close();
                                 <?php foreach ($jezyki as $jezyk): ?>
                                     <div class="mb-3 col-md-6">
                                         <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
-                                        <label for="NazwaJezyka" class="form-label" id="NazwaJezyka"><?php echo $jezyk['NazwaJęzyka']; ?></label>
+                                        <label for="NazwaJezyka" class="form-label" id="NazwaJezyka"><?php echo $jezyk['NazwaJezyka']; ?></label>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label for="Poziom" class="form-label">Poziom znajomości:</label>
-                                        <label for="Poziom" class="form-label" id="poziomZnajomosci"><?php echo $jezyk['PoziomZnajomości']; ?></label>
+                                        <label for="Poziom" class="form-label" id="poziomZnajomosci"><?php echo $jezyk['PoziomZnajomosci']; ?></label>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
@@ -598,11 +598,11 @@ $mysqli->close();
                                             <?php foreach ($jezyki as $jezyk): ?>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="NazwaJezyka" class="form-label">Nazwa języka:</label>
-                                                    <input type="text" class="form-control" id="NazwaJezyka" name="NazwaJezykaa" value="<?php echo $jezyk['NazwaJęzyka']; ?>">
+                                                    <input type="text" class="form-control" id="NazwaJezyka" name="NazwaJezykaa" value="<?php echo $jezyk['NazwaJezyka']; ?>">
                                                 </div>
                                                 <div class="mb-3 col-md-6">
                                                     <label for="Poziom" class="form-label">Poziom znajomości:</label>
-                                                    <input type="text" class="form-control" id="poziomZnajomosci" name="poziomZnajomoscii" value="<?php echo $jezyk['PoziomZnajomości']; ?>">
+                                                    <input type="text" class="form-control" id="poziomZnajomosci" name="poziomZnajomoscii" value="<?php echo $jezyk['PoziomZnajomosci']; ?>">
                                                 </div>
                                             <?php endforeach; ?>
                                             </div>

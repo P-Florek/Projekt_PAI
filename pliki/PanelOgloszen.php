@@ -137,7 +137,7 @@ if (isset($_SESSION["current_user"])) {
         
             
         <?php
-            $zapytanie = "SELECT * FROM ogłoszeniapracy WHERE 1";
+            $zapytanie = "SELECT * FROM ogloszeniapracy WHERE 1";
 
             if ($kategoria != 'Wszystkie') {
                 $zapytanie .= " AND Kategoria = '$kategoria'";
@@ -156,9 +156,9 @@ if (isset($_SESSION["current_user"])) {
             }
 
             if ($sortowanie == 'Wszystkie') {
-                $zapytanie .= " ORDER BY WidełkiWynagrodzenia ASC";
+                $zapytanie .= " ORDER BY WidelkiWynagrodzenia ASC";
             } elseif ($sortowanie == 'najdrozsze') {
-                $zapytanie .= " ORDER BY WidełkiWynagrodzenia DESC";
+                $zapytanie .= " ORDER BY WidelkiWynagrodzenia DESC";
             } else {
                 //$zapytanie .= " ORDER BY DataDodania DESC";
             }
@@ -174,7 +174,7 @@ if (isset($_SESSION["current_user"])) {
                         <div class="card-body">
                             <h5 class="card-title">' . $ogloszenie['NazwaStanowiska'] . '</h5>
                             <p class="card-text">' . $ogloszenie['OpisStanowiska'] . '</p>
-                            <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogłoszenie_id'] . '" role="button" class="btn btn-secondary">
+                            <a href="StronaOgloszenia.php?id=' . $ogloszenie['ogloszenie_id'] . '" role="button" class="btn btn-secondary">
                                 Zobacz szczegóły
                             </a>
                         </div>

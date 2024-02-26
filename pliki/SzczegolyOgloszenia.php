@@ -161,8 +161,12 @@ $ogloszenie = $wynik->fetch_assoc();
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title"></h5>
-                            <a href="StronaOgloszenia.html" role="button" class="btn btn-secondary d-grid gap-2">
-                                Aplikuj
+                            <a href="EdytacjaOgloszenia.php?id=' . $ogloszenie['ogloszenie_id'] . '" role="button" class="btn btn-secondary">
+                                Zapisz ogłoszenie
+                            </a>
+                            <h5 class="card-title"></h5>
+                            <a href="StronaOgloszenia.php" role="button" class="btn btn-secondary d-grid gap-2">
+                                Usuń ogłoszenie
                             </a>
                     </div>
                 </div>
