@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['Email'];
         $haslo = $_POST['Haslo'];
 
-        $sqlUzytkownik = "SELECT Użytkownik_id FROM użytkownicy WHERE Email='$email' AND Haslo='$haslo'";
+        $sqlUzytkownik = "SELECT Uzytkownik_id FROM uzytkownicy WHERE Email='$email' AND Haslo='$haslo'";
         $resultUzytkownik = $mysqli->query($sqlUzytkownik);
 
         if ($resultUzytkownik->num_rows > 0) {
