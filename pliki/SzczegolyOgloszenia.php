@@ -57,6 +57,34 @@ $ogloszenie = $wynik->fetch_assoc();
     <title>Ogłoszenie</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
+<style>
+
+    .advertisement {
+      margin-bottom: 15px;
+    }
+
+   
+    .advertisement h2 {
+      font-size: 18px;
+    }
+
+    .advertisement label {
+      font-size: 13px;
+    }
+
+
+    .add-button {
+      border: 2px solid #555; 
+      border-radius: 5px;
+      padding: 10px 20px;
+      background-color: #f8f9fa; 
+      color: #333; 
+    }
+
+    .add-button:hover {
+      background-color: #e9ecef; 
+    }
+  </style>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
         <div class="container-fluid mt ">
@@ -92,87 +120,129 @@ $ogloszenie = $wynik->fetch_assoc();
 
 
     <div class="container mt-5">
-        <div class="row">
+    <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-4">
                     <img src="<?php echo $ogloszenie['Zdjecie']; ?>" class="card-img-top" alt="Ogłoszenie">
                     <div class="card-body">
                             <div class="col-md-12">
-                                <div class="row">
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Lokalizacja" class="form-label"><strong>Nazwa stanowiska :</strong></label>
-                                        <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $ogloszenie['NazwaStanowiska']; ?></label>
+                                
+                                    <div class="container mt-3">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Nazwa stanowiska :</h2>
+                                                <input type="text" class="form-control" id="NazwaStanowiska" name='NazwaStanowiska' Value="<?php echo $ogloszenie['NazwaStanowiska']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Kategoria :</h2>
+                                                <select class="form-control" id="kategoria" name="kategoria" Value="<?php echo $ogloszenie['Kategoria']; ?>">
+                                                    <option value="inzynieria">inzynieria</option>
+                                                    <option value="mechanika">mechanika</option>
+                                                    <option value="medycyna">medycyna</option>
+                                                    <option value="informatyka">informatyka</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Rodzaj umowy :</h2>
+                                                <select class="form-control" id="Rodzajumowy" name="Rodzajumowy" Value="<?php echo $ogloszenie['RodzajUmowy']; ?>">
+                                                    <option value="NaCzasOkreslony">NaCzasOkreslony</option>
+                                                    <option value="NaCzasNieokreslony">NaCzasNieokreslony</option>
+                                                    <option value="OkresProbny">OkresProbny</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Opis stanowiska :</h2>
+                                                <input type="text" class="form-control" id="Opis" name='Opis' Value="<?php echo $ogloszenie['OpisStanowiska']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Poziom zatrudnienia :</h2>
+                                                <input type="text" class="form-control" id="Poziom" name='Poziom' Value="<?php echo $ogloszenie['PoziomZatrudnienia']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Rodzaj pracy :</h2>
+                                                <input type="text" class="form-control" id="RodzajPracy" name='RodzajPracy' Value="<?php echo $ogloszenie['RodzajPracy']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Praca zdalna :</h2>
+                                                <select class="form-control" id="pracaZdalnaa" name="pracaZdalna" value="<?php echo $ogloszenie['PracaZdalna']; ?>">
+                                                    <option value="TAK">TAK</option>
+                                                    <option value="NIE">NIE</option>
+                                                </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Wynagrodzenie :</h2>
+                                                <input type="text" class="form-control" id="wynagrodzenie" name='wynagrodzenie' Value="<?php echo $ogloszenie['WidelkiWynagrodzenia']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Dni pracy :</h2>
+                                                <input type="text" class="form-control" id="Dnipracy" name='Dnipracy' Value="<?php echo $ogloszenie['DniPracy']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Data wygaśnięcia :</h2>
+                                                <input type="date" class="form-control" id="dataWygasniecia" name='dataWygasniecia' value="<?php echo $ogloszenie['DataWygasniecia']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Godziny pracy :</h2>
+                                                <input type="text" class="form-control" id="GodzinyPracy" name='GodzinyPracy' Value="<?php echo $ogloszenie['GodzinyPracy']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="advertisement bg-light p-3">
+                                                <h2>Wymagania :</h2>
+                                                <input type="text" class="form-control" id="Wymagania" name='Wymagania' Value="<?php echo $ogloszenie['Wymagania']; ?>">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Umowa" class="form-label"><strong>Kategoria :</strong></label>
-                                        <label for="Umowa" class="form-label" id="Umowa"><?php echo $ogloszenie['Kategoria']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="DataWygasniecia" class="form-label"><strong>Rodzaj umowy :</strong></label>
-                                        <label for="DataWygasniecia" class="form-label" id="DataWygasniecia"><?php echo $ogloszenie['RodzajUmowy']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="zdalna" class="form-label"><strong>Opis stanowiska :</strong></label>
-                                        <label for="zdalna" class="form-label" id="zdalna"><?php echo $ogloszenie['OpisStanowiska']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Wynagrodzenie" class="form-label"><strong>Poziom zatrudnienia :</strong></label>
-                                        <label for="Wynagrodzenie" class="form-label" id="Wynagrodzenie"><?php echo $ogloszenie['PoziomZatrudnienia']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Lokalizacja" class="form-label"><strong>Rodzaj pracy :</strong></label>
-                                        <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $ogloszenie['RodzajPracy']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Umowa" class="form-label"><strong>Praca zdalna :</strong></label>
-                                        <label for="Umowa" class="form-label" id="Umowa"><?php echo $ogloszenie['PracaZdalna']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="DataWygasniecia" class="form-label"><strong>Wynagrodzenie :</strong></label>
-                                        <label for="DataWygasniecia" class="form-label" id="DataWygasniecia"><?php echo $ogloszenie['WidelkiWynagrodzenia']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="zdalna" class="form-label"><strong>Dni pracy :</strong></label>
-                                        <label for="zdalna" class="form-label" id="zdalna"><?php echo $ogloszenie['DniPracy']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Lokalizacja" class="form-label"><strong>Data wygaśnięcia :</strong></label>
-                                        <label for="Lokalizacja" class="form-label" id="Lokalizacja"><?php echo $ogloszenie['DataWygasniecia']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="Umowa" class="form-label"><strong>Godziny pracy :</strong></label>
-                                        <label for="Umowa" class="form-label" id="Umowa"><?php echo $ogloszenie['GodzinyPracy']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="DataWygasniecia" class="form-label"><strong>Wymagania :</strong></label>
-                                        <label for="DataWygasniecia" class="form-label" id="DataWygasniecia"><?php echo $ogloszenie['Wymagania']; ?></label>
-                                    </div>
-                                    <div class="mb-3 col-md-6">
-                                        <label for="zdalna" class="form-label"><strong>Oferty :</strong></label>
-                                        <label for="zdalna" class="form-label" id="zdalna"><?php echo $ogloszenie['Oferty']; ?></label>
-                                    </div>
-                                </div>
+                                
                             </div>
                     </div>
                 </div>
             </div>
-            
             <div class="col-lg-4">
-                <div class="card">
+                <div class="card mb-4">
                     <div class="card-body">
-                        <h5 class="card-title"></h5>
-                            <a href="EdytacjaOgloszenia.php?id=' . $ogloszenie['ogloszenie_id'] . '" role="button" class="btn btn-secondary">
-                                Zapisz ogłoszenie
-                            </a>
-                            <h5 class="card-title"></h5>
-                            <a href="StronaOgloszenia.php" role="button" class="btn btn-secondary d-grid gap-2">
-                                Usuń ogłoszenie
-                            </a>
+                        <div class="advertisement2 bg-light p-3">
+                                
+                                                    <button class="add-button">Edytuj ogłoszenie</button>
+                                                    <button class="add-button">Usuń ogłoszenie</button>
+
+                        </div>
                     </div>
                 </div>
             </div>
+            
         </div>
-    </div>
         
 
     </div>
