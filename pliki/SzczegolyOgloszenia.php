@@ -24,19 +24,11 @@ if (isset($_SESSION["current_user"])) {
 
 <?php
 
-$ogloszenie_id = $_GET['id'] ?? null;
+$ogloszenie = $_GET['id'] ?? null;
 
 
-if (!isset($ogloszenie_id) || !is_numeric($ogloszenie_id)) {
-
-    echo 'Nieprawidłowe ogłoszenie.';
-    exit();
-}
-
-
-$zapytanie = "SELECT * FROM ogloszeniapracy WHERE ogloszenie_id = $ogloszenie_id";
+$zapytanie = "SELECT * FROM ogloszeniapracy WHERE ogloszenie_id = $ogloszenie";
 $wynik = $mysqli->query($zapytanie);
-
 
 if ($wynik->num_rows === 0) {
     echo 'Ogłoszenie nie istnieje.';
@@ -45,8 +37,6 @@ if ($wynik->num_rows === 0) {
 
 
 $ogloszenie = $wynik->fetch_assoc();
-
-
 ?>
 
 <!DOCTYPE html>
@@ -123,7 +113,9 @@ $ogloszenie = $wynik->fetch_assoc();
     <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-4">
-                    <img src="<?php echo $ogloszenie['Zdjecie']; ?>" class="card-img-top" alt="Ogłoszenie">
+                <form method="post" action="edycjaOgloszeniaskrypt.php">
+                    <h2>Zdjęcie :</h2>
+                    <input type="text" class="form-control" id="NazwaStanowiska" name='Zdj' Value="<?php echo $ogloszenie['Zdjecie']; ?>">
                     <div class="card-body">
                             <div class="col-md-12">
                                 
@@ -174,7 +166,7 @@ $ogloszenie = $wynik->fetch_assoc();
                                             <div class="col-md-4">
                                                 <div class="advertisement bg-light p-3">
                                                 <h2>Rodzaj pracy :</h2>
-                                                <input type="text" class="form-control" id="RodzajPracy" name='RodzajPracy' Value="<?php echo $ogloszenie['RodzajPracy']; ?>">
+                                                <input type="text" class="form-control" id="RodzajPracy" name='rodzajPracy' Value="<?php echo $ogloszenie['RodzajPracy']; ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -198,7 +190,7 @@ $ogloszenie = $wynik->fetch_assoc();
                                             <div class="col-md-4">
                                                 <div class="advertisement bg-light p-3">
                                                 <h2>Dni pracy :</h2>
-                                                <input type="text" class="form-control" id="Dnipracy" name='Dnipracy' Value="<?php echo $ogloszenie['DniPracy']; ?>">
+                                                <input type="text" class="form-control" id="dnipracy" name='dnipracy' Value="<?php echo $ogloszenie['DniPracy']; ?>">
                                                 </div>
                                             </div>
                                         </div>
@@ -227,16 +219,24 @@ $ogloszenie = $wynik->fetch_assoc();
                                 
                             </div>
                     </div>
+                
                 </div>
             </div>
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body">
                         <div class="advertisement2 bg-light p-3">
-                                
-                                                    <button class="add-button">Edytuj ogłoszenie</button>
-                                                    <button class="add-button">Usuń ogłoszenie</button>
-
+                        
+                            <button class="add-button" type="submit" name="submit">Edytuj ogłoszenie</button>
+                            <input type="hidden" name="ogloszenie_id" value="<?php echo $ogloszenie['ogloszenie_id']; ?>">
+                            <input type="hidden" name="action" value="edytujOgloszenie"> 
+                        
+                            </form>
+                            <form method="post" action="edycjaOgloszeniaskrypt.php">
+                                <button class="add-button" type="submit" name="submit">Usuń ogłoszenie</button>
+                                <input type="hidden" name="ogloszenie_id" value="<?php echo $ogloszenie['ogloszenie_id']; ?>">
+                                <input type="hidden" name="action" value="usunOgloszenie"> 
+                            </form>   
                         </div>
                     </div>
                 </div>

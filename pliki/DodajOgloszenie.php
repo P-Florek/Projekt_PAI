@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $RodzajPracy = $_POST['rodzajPracy'];
             $PracaZdalna = $_POST['pracaZdalna'];
             $WidełkiWynagrodzenia = $_POST['widelkiWynagrodzenia'];
-            $DniPracy = $_POST['widelkiWynagrodzenia'];
+            $DniPracy = $_POST['DniPracy'];
             $GodzinyPracy = $_POST['godzinyPracy'];
             $DataWygaśnięcia = $_POST['dataWygasniecia'];
             $Kategoria = $_POST['kategoria'];
