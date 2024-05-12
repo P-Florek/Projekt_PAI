@@ -46,6 +46,51 @@ if ($wynik->num_rows === 0) {
 
 $ogloszenie = $wynik->fetch_assoc();
 
+if (isset($_SESSION["current_user"])) {
+    
+    $userID = $_SESSION["current_user"];
+    $user_query = "SELECT * FROM uzytkownicy WHERE Uzytkownik_id = $userID";
+    $user_result = $mysqli->query($user_query); 
+    $user_data = $user_result->fetch_assoc();
+} else if(isset($_SESSION["current_firma"])){
+    
+    
+
+} else{
+    
+}
+
+
+
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $imie = $_POST['imie'] ?? '';
+    $nazwisko = $_POST['nazwisko'] ?? '';
+    $email = $_POST['email'] ?? '';
+
+
+
+
+    $sprawdz_zduplikowane_query = "SELECT * FROM aplikacjeuzytkownika WHERE Uzytkownik_id = $userID AND ogloszenie_id = $ogloszenie_id";
+    $sprawdz_zduplikowane_result = $mysqli->query($sprawdz_zduplikowane_query);
+
+    if ($sprawdz_zduplikowane_result->num_rows > 0) {
+         echo '<script>alert("Już aplikowałeś na to ogłoszenie.");</script>';
+    } else {
+
+        $data_aplikacji = date('Y-m-d H:i:s');
+        $dodaj_aplikacje_query = "INSERT INTO aplikacjeuzytkownika (Uzytkownik_id, ogloszenie_id, DataAplikacji) VALUES ($userID, $ogloszenie_id, '$data_aplikacji')";
+
+        if ($mysqli->query($dodaj_aplikacje_query) === TRUE) {
+            echo '<script>alert("Aplikacja została przesłana pomyślnie.");</script>';
+        } else {
+            echo '<script>alert("Błąd podczas przesyłania aplikacji: ' . $mysqli->error . '");</script>';
+        }
+    }
+}
+
 
 ?>
 
@@ -222,7 +267,15 @@ $ogloszenie = $wynik->fetch_assoc();
                     <div class="card-body">
                         <div class="advertisement2 bg-light p-3">
                                                     <h2>Jestes zainteresowany ?</h2>
-                                                    <button class="add-button">Aplikuj już teraz</button>
+                                                    <form method="post">
+
+                                                        <input type="text" name="imie" placeholder="Imię" value="<?php echo $user_data['Imie']; ?>" required>
+                                                        <input type="text" name="nazwisko" placeholder="Nazwisko" value="<?php echo $user_data['Nazwisko']; ?>" required>
+                                                        <input type="email" name="email" placeholder="E-mail" value="<?php echo $user_data['Email']; ?>" required>
+
+
+                                                        <button type="submit" class="add-button">Aplikuj już teraz</button>
+                                                    </form>
                                                     
                         </div>
                     </div>
