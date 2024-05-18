@@ -59,8 +59,36 @@ if ($result->num_rows > 0) {
 }
 
 $mysqli->close();
-?>
 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "bazaprojekt";
+
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Połączenie nieudane: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+    $delete_id = $_POST['delete_id'];
+    $delete_sql = "DELETE FROM aplikacjeuzytkownika WHERE Aplikacja_id = ?";
+    $delete_stmt = $conn->prepare($delete_sql);
+    $delete_stmt->bind_param("i", $delete_id);
+    if ($delete_stmt->execute()) {
+        echo "Aplikacja została usunięta.";
+    } else {
+        echo "Błąd: " . $delete_stmt->error;
+    }
+    $delete_stmt->close();
+}
+
+$sql = "SELECT * FROM aplikacjeuzytkownika";
+$result = $conn->query($sql);
+?>
 
 
 <!DOCTYPE html>
@@ -110,130 +138,47 @@ $mysqli->close();
 
 <div class="container mt-5">
 
-<?php 
- if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['przyjmij'])) {
-        $uzytkownik_id = $_POST['uzytkownik_id'];
-
-        $host = "localhost";
-                $username = "root";
-                $password = "";
-                $database = "bazaprojekt";
-
-                $mysqli = new mysqli($host, $username, $password, $database);
-
-                $zapytanie = "SELECT * FROM ogloszeniapracy WHERE Firma_id = $userID";
-                $wyniki = $mysqli->query($zapytanie);
-
-                while ($ogloszenie = $wyniki->fetch_assoc()) {
-
-        $sprawdz_zduplikowane_query = "SELECT * FROM aplikacjeuzytkownika WHERE Uzytkownik_id = $uzytkownik_id AND ogloszenie_id = $ogloszenie[ogloszenie_id]";
-        $sprawdz_zduplikowane_result = $mysqli->query($sprawdz_zduplikowane_query);
-        }
-        
-
-        if ($sprawdz_zduplikowane_result->num_rows > 0) {
-            echo '<div class="alert alert-warning" role="alert">Ten użytkownik już przesłał aplikację.</div>';
-        } else {
-
-            $data_aplikacji = date('Y-m-d H:i:s');
-            $dodaj_aplikacje_query = "INSERT INTO aplikacjeuzytkownika (Uzytkownik_id, ogloszenie_id, DataAplikacji) VALUES ($uzytkownik_id, $ogloszenie_id, '$data_aplikacji')";
-
-            if ($mysqli->query($dodaj_aplikacje_query) === TRUE) {
-                echo '<div class="alert alert-success" role="alert">Aplikacja użytkownika została przesłana pomyślnie.</div>';
-            } else {
-                echo '<div class="alert alert-danger" role="alert">Błąd podczas przesyłania aplikacji: ' . $mysqli->error . '</div>';
-            }
-        }
-    } elseif (isset($_POST['odrzuc'])) {
-        $uzytkownik_id = $_POST['uzytkownik_id'];
-
-
-        $host = "localhost";
-                $username = "root";
-                $password = "";
-                $database = "bazaprojekt";
-
-                $mysqli = new mysqli($host, $username, $password, $database);
-
-                $zapytanie = "SELECT * FROM ogloszeniapracy WHERE Firma_id = $userID";
-                $wyniki = $mysqli->query($zapytanie);
-
-                while ($ogloszenie = $wyniki->fetch_assoc()) {
-
-        $sprawdz_zduplikowane_query = "SELECT * FROM aplikacjeuzytkownika WHERE Uzytkownik_id = $uzytkownik_id AND ogloszenie_id = $ogloszenie[ogloszenie_id]";
-        $sprawdz_zduplikowane_result = $mysqli->query($sprawdz_zduplikowane_query);
-
-        
-
-        if ($sprawdz_zduplikowane_result->num_rows > 0) {
-
-            $data_aplikacji = date('Y-m-d H:i:s');
-            $dodaj_aplikacje_query = "DELETE FROM aplikacjeuzytkownika WHERE Uzytkownik_id = $uzytkownik_id AND ogloszenie_id = $ogloszenie[ogloszenie_id]";
-
-            if ($mysqli->query($dodaj_aplikacje_query) === TRUE) {
-                echo '<div class="alert alert-success" role="alert">Aplikacja użytkownika została przesłana pomyślnie.</div>';
-            } else {
-                echo '<div class="alert alert-danger" role="alert">Błąd podczas przesyłania aplikacji: ' . $mysqli->error . '</div>';
-            }
-        }
-    }
-    }
-}
-?>
-
-
-
 <div class="row card card-body mt-4">
-    <h2>Aplikacje na ogłoszenie</h2>
-    <?php
 
-                $host = "localhost";
-                $username = "root";
-                $password = "";
-                $database = "bazaprojekt";
-
-                $mysqli = new mysqli($host, $username, $password, $database);
-
-                $zapytanie = "SELECT * FROM ogloszeniapracy WHERE Firma_id = $userID";
-                $wyniki = $mysqli->query($zapytanie);
-
-                while ($ogloszenie = $wyniki->fetch_assoc()) {
-
-    $zapytanie_aplikacje = "SELECT * FROM aplikacjeuzytkownika WHERE ogloszenie_id = $ogloszenie[ogloszenie_id]";
-    $wyniki_aplikacje = $mysqli->query($zapytanie_aplikacje);
-}
-$wyniki->free_result();
-
-    while ($aplikacja = $wyniki_aplikacje->fetch_assoc()) {
-        $uzytkownik_id = $aplikacja['Uzytkownik_id'];
-        $data_aplikacji = $aplikacja['DataAplikacji'];
-
-
-        $zapytanie_uzytkownik = "SELECT * FROM uzytkownicy WHERE Uzytkownik_id = $uzytkownik_id";
-        $wyniki_uzytkownik = $mysqli->query($zapytanie_uzytkownik);
-        $uzytkownik = $wyniki_uzytkownik->fetch_assoc();
-
-
-        echo '<div class="card mb-4">
-                <div class="card-body">
-                    <h5 class="card-title">' . $uzytkownik['Imie'] . ' ' . $uzytkownik['Nazwisko'] . '</h5>
-                    <p class="card-text">Data aplikacji: ' . $data_aplikacji . '</p>
-                    <form method="post">
-                        <input type="hidden" name="uzytkownik_id" value="' . $uzytkownik_id . '">
-                        <button type="submit" name="przyjmij" class="btn btn-success mr-2">Przyjmij</button>
-                        <button type="submit" name="odrzuc" class="btn btn-danger">Odrzuć</button>
-                    </form>
-                </div>
-            </div>';
-    }
-    $wyniki_aplikacje->free_result();
-
-    ?>
+<div class="container">
+        <h2>Zarządzaj Aplikacjami</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID Aplikacji</th>
+                    <th>ID Użytkownika</th>
+                    <th>ID Ogłoszenia</th>
+                    <th>Data Aplikacji</th>
+                    <th>Akcje</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["Aplikacja_id"] . "</td>";
+                        echo "<td>" . $row["Uzytkownik_id"] . "</td>";
+                        echo "<td>" . $row["ogloszenie_id"] . "</td>";
+                        echo "<td>" . $row["DataAplikacji"] . "</td>";
+                        echo "<td>
+                            <form method='post' style='display:inline-block'>
+                                <input type='hidden' name='delete_id' value='" . $row["Aplikacja_id"] . "'>
+                                <button type='submit' class='btn btn-danger'>Usuń</button>
+                            </form>
+                        </td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='5' class='text-center'>Brak aplikacji</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+        
 </div>
 
-
-        
 </div>
 <footer class="container-fluid bg-light text-dark py-5 mt-5 shadow">
     <div class="row">
