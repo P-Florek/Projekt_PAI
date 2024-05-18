@@ -77,9 +77,9 @@ if (isset($_SESSION["current_user"])) {
         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
     ?>
 
-    <div class="container mt-5">
+    <div class="container mt-5 shadow p-3 mb-5">
     <form method="get" action="PanelOgloszen.php">
-    <div class="row mb-3">
+    <div class="row mb-3 ">
         <div class="col-md-2">
             <label for="category">Kategoria:</label>
             <select class="form-select" name="category" id="category">
@@ -169,7 +169,7 @@ if (isset($_SESSION["current_user"])) {
 
             while ($ogloszenie = $wyniki->fetch_assoc()) {
 
-                echo '<div class="card mb-4">
+                echo '<div class="card shadow p-3 mb-5">
                         <img src="' . $ogloszenie['Zdjecie'] . '" class="card-img-top" alt="Ogłoszenie">
                         <div class="card-body">
                             <h5 class="card-title">' . $ogloszenie['NazwaStanowiska'] . '</h5>
@@ -186,14 +186,13 @@ if (isset($_SESSION["current_user"])) {
             ?>
             </div>
             <div class="col-lg-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Ostatnie ogłoszenia</h5>
-                        <ul class="list-group">
+
+
+                        <ul class="list-group shadow p-3 mb-5">
                             <div class="card mb-4">
                                 <img src="../Grafiki/zdjecieOgloszenie.jpg" class="card-img-top" alt="Sample Image">
                                 <div class="card-body">
-                                    <h5 class="card-title">Tytuł ogłoszenia</h5>
+                                    <h5 class="card-title ">Tytuł ogłoszenia</h5>
                                     <p class="card-text">Opis ogłoszenia. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Zobacz szczegóły
@@ -212,8 +211,8 @@ if (isset($_SESSION["current_user"])) {
                             </div>
                             
                         </ul>
-                    </div>
-                </div>
+
+
             </div>
             
             

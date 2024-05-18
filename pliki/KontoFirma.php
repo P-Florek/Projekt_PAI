@@ -110,7 +110,7 @@ $mysqli->close();
 
 <div class="container mt-5">
 
-    <div class="row card  card-body mt-4">
+    <div class="row card  card-body mt-4 shadow p-3 mb-5">
         <h2>Ustawienia Konta :</h2>
             <div class="col-md-12">
                 <div class="row mt-2">
@@ -133,7 +133,7 @@ $mysqli->close();
 
     </div>
 
-    <div class="row card  card-body mt-4">
+    <div class="row card  card-body mt-4 shadow p-3 mb-5">
     <h2>Dane Firmy</h2>
         <div class="col-md-12">
             <div class="row">
@@ -179,7 +179,7 @@ $mysqli->close();
 
 
 
-    <div class="row card  card-body mt-4">
+    <div class="row card  card-body mt-4 shadow p-3 mb-5">
         <h2>Dane Konta</h2>
             <div class="col-md-12">
                 <div class="row">
@@ -221,7 +221,7 @@ $mysqli->close();
                 </div>
         </div>
 
-        <div class="row card  card-body mt-4">
+        <div class="row card  card-body mt-4 shadow p-3 mb-5">
         <h2>Ogloszenia firmy </h2>
             <?php
                 $host = "localhost";

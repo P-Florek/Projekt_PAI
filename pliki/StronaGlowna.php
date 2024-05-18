@@ -63,13 +63,11 @@ if (isset($_SESSION["current_user"])) {
         </div>
     </div>
     
-  <div class="carousel-inner">
-    <div class="carousel-item active d-flex justify-content-center">
-      <img src="../Grafiki/slide1.png" class="d-block w-100" alt="..." style="background-repeat: no-repeat; height: 60vh;">
-      <div class="carousel-caption d-none d-md-block">
-      <div class="container mt-5">
-        <div class="jumbotron text-center">
-            <h1 class="display-4">Witaj na naszym portalu ogłoszeniowym!</h1>
+
+
+      <div class="container mt-5 shadow p-3 mb-5">
+        <div class="jumbotron text-center shadow p-3 mb-5">
+            <h1 class="display-5">Witaj na naszym portalu ogłoszeniowym!</h1>
             <p class="lead">Znajdziesz tutaj różnorodne ogłoszenia na temat usług, produktów i wielu innych.</p>
             <hr class="my-4">
             <p>Sprawdź nasze kategorie ogłoszeń i znajdź to, czego szukasz.</p>
@@ -78,13 +76,13 @@ if (isset($_SESSION["current_user"])) {
 
         <div class="row mb-3 mt-5 text-center">
             <form class="form-inline row mb">
-                <div class="col-md-6">
+                <div class="col-md-6 ">
                     <h1 class="display-4">Nie masz Konta ?</h1>
                     <p class="lead">Zarejestruj się.</p>
                     <hr class="my-4">
                     <a class="btn btn-secondary btn-lg" href="Rejestracja.php" role="button">Zarejestruj się</a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 ">
                     <h1 class="display-4">Masz już Konto ?</h1>
                     <p class="lead">Witamy ponownie.</p>
                     <hr class="my-4">
@@ -93,9 +91,8 @@ if (isset($_SESSION["current_user"])) {
             </form>
         </div>
         
-    </div>
-      </div>
-    </div>
+
+
 </div>
 
 

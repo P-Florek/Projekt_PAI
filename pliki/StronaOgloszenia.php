@@ -218,12 +218,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
 
-    <div class="container mt-5">
+    <div class="container mt-5 shadow p-3 mb-5">
         <div class="row">
             <div class="col-lg-8">
                 <div class="card mb-4">
                     <img src="<?php echo $ogloszenie['Zdjecie']; ?>" class="card-img-top" alt="Ogłoszenie">
-                    <div class="card-body">
+                    <div class="card-body ">
                             <div class="col-md-12">
                                 
                                     <div class="container mt-3">
@@ -316,25 +316,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card mb-4">
-                    <div class="card-body">
+            <div class="col-lg-4 ">
+                <div class="card mb-4 ">
+                    <div class="card-body ">
                         <div class="advertisement2 bg-light p-3">
                                                     <h2>Jestes zainteresowany ?</h2>
                                                     <form method="post">
-                                                        <div class="mb-3 col-md-12">
-                                                        <input type="text" class="form-control" name="imie" placeholder="Imię" value="<?php echo $user_data['Imie']; ?>" required>
-                                                        </div>
-                                                        <div class="mb-3 col-md-12">
-                                                        <input type="text" class="form-control" name="nazwisko" placeholder="Nazwisko" value="<?php echo $user_data['Nazwisko']; ?>" required>
-                                                        </div>
-                                                        <div class="mb-3 col-md-12">
-                                                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<?php echo $user_data['Email']; ?>" required>
-                                                        </div>
-                                                        
-                                                        
-                                                        
-
                                                         <div class="mb-3 col-md-12">
                                                         <form class="d-flex">
                                                             <?php echo $PrzyciskAplikacji; ?>

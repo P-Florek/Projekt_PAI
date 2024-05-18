@@ -63,7 +63,7 @@ if (isset($_SESSION["current_user"])) {
         </div>
     </div>
     
-    <div class="container mt-5">
+    <div class="container mt-5 shadow p-3 mb-5">
     <div class="jumbotron text-center">
         <h1 class="display-4">Zarejestruj się!</h1>
         <p class="lead"></p>
