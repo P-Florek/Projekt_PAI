@@ -6,6 +6,9 @@ $username = "root";
 $password = "";
 $database = "bazaprojekt";
 
+
+
+
 $mysqli = new mysqli($host, $username, $password, $database);
 
 if ($mysqli->connect_error) {
@@ -15,10 +18,13 @@ if ($mysqli->connect_error) {
 
 if (isset($_SESSION["current_user"])) {
     $navbarButton = '<a href="Konto.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+    $PrzyciskAplikacji = '<button type="submit" class="add-button text-center">Aplikuj już teraz</button>';
 } else if(isset($_SESSION["current_firma"])){
     $navbarButton = '<a href="KontoFirma.php" role="button" class="btn btn-outline-dark" type="submit">KONTO</a>';
+    $PrzyciskAplikacji = '<button type="submit" class="add-button text-center" disabled>Aplikuj już teraz</button>';
 } else{
     $navbarButton = '<a href="StronaGlowna.php" role="button" class="btn btn-outline-dark" type="submit">ZALOGUJ</a>';
+    $PrzyciskAplikacji = '<button type="submit" class="add-button text-center" disabled>Aplikuj już teraz</button>';
 }
 ?>
 
@@ -59,12 +65,53 @@ if (isset($_SESSION["current_user"])) {
 } else{
     
 }
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "bazaprojekt";
 
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        die("Połączenie nieudane: " . $conn->connect_error);
+    }
+
+    $check_sql = "SELECT COUNT(*) FROM aplikacjeuzytkownika WHERE Uzytkownik_id = ? AND ogloszenie_id = ?";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bind_param("ii", $userID, $ogloszenie_id);
+    $check_stmt->execute();
+    $check_stmt->bind_result($count);
+    $check_stmt->fetch();
+    $check_stmt->close();
+
+    if ($count > 0) {
+        $Powiadomienie = '<div class="alert alert-success" role="alert">
+        Zaaplikowales juz na to ogłoszenie !
+        </div>';
+        $PrzyciskAplikacji = '<button type="submit" class="add-button text-center" disabled>Aplikuj już teraz</button>';
+    } else {
+        $Powiadomienie = '<div class="alert alert-danger" role="alert">
+        Nie aplikowałes jeszcze na to ogłoszenie.
+        </div>';
+    }
 
 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "bazaprojekt";
+    
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+    
+
+    if ($conn->connect_error) {
+        die("Połączenie nieudane: " . $conn->connect_error);
+    }
 
     $imie = $_POST['imie'] ?? '';
     $nazwisko = $_POST['nazwisko'] ?? '';
@@ -73,22 +120,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-    $sprawdz_zduplikowane_query = "SELECT * FROM aplikacjeuzytkownika WHERE Uzytkownik_id = $userID AND ogloszenie_id = $ogloszenie_id";
-    $sprawdz_zduplikowane_result = $mysqli->query($sprawdz_zduplikowane_query);
+    $uzytkownik_id = $userID;
+    $ogloszenie = $ogloszenie_id;
+    $data_aplikacji = date('Y-m-d H:i:s'); 
 
-    if ($sprawdz_zduplikowane_result->num_rows > 0) {
-         echo '<script>alert("Już aplikowałeś na to ogłoszenie.");</script>';
+
+    $sql = "INSERT INTO aplikacjeuzytkownika (Uzytkownik_id, ogloszenie_id, DataAplikacji) VALUES (?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iis", $uzytkownik_id, $ogloszenie, $data_aplikacji);
+
+    if ($stmt->execute()) {
+        echo "Aplikacja została złożona pomyślnie!";
+        echo '<meta http-equiv="refresh" content="0;url=StronaOgloszenia.php?id=' . $ogloszenie.'">';exit();
+        $Powiadomienie = '<div class="alert alert-success" role="alert">
+        A simple success alert—check it out!
+        </div>';
     } else {
-
-        $data_aplikacji = date('Y-m-d H:i:s');
-        $dodaj_aplikacje_query = "INSERT INTO aplikacjeuzytkownika (Uzytkownik_id, ogloszenie_id, DataAplikacji) VALUES ($userID, $ogloszenie_id, '$data_aplikacji')";
-
-        if ($mysqli->query($dodaj_aplikacje_query) === TRUE) {
-            echo '<script>alert("Aplikacja została przesłana pomyślnie.");</script>';
-        } else {
-            echo '<script>alert("Błąd podczas przesyłania aplikacji: ' . $mysqli->error . '");</script>';
-        }
+        echo "Błąd: " . $stmt->error;
     }
+
+    
+    $stmt->close();
+    $conn->close();
 }
 
 
@@ -268,13 +322,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="advertisement2 bg-light p-3">
                                                     <h2>Jestes zainteresowany ?</h2>
                                                     <form method="post">
+                                                        <div class="mb-3 col-md-12">
+                                                        <input type="text" class="form-control" name="imie" placeholder="Imię" value="<?php echo $user_data['Imie']; ?>" required>
+                                                        </div>
+                                                        <div class="mb-3 col-md-12">
+                                                        <input type="text" class="form-control" name="nazwisko" placeholder="Nazwisko" value="<?php echo $user_data['Nazwisko']; ?>" required>
+                                                        </div>
+                                                        <div class="mb-3 col-md-12">
+                                                        <input type="email" class="form-control" name="email" placeholder="E-mail" value="<?php echo $user_data['Email']; ?>" required>
+                                                        </div>
+                                                        
+                                                        
+                                                        
 
-                                                        <input type="text" name="imie" placeholder="Imię" value="<?php echo $user_data['Imie']; ?>" required>
-                                                        <input type="text" name="nazwisko" placeholder="Nazwisko" value="<?php echo $user_data['Nazwisko']; ?>" required>
-                                                        <input type="email" name="email" placeholder="E-mail" value="<?php echo $user_data['Email']; ?>" required>
-
-
-                                                        <button type="submit" class="add-button">Aplikuj już teraz</button>
+                                                        <div class="mb-3 col-md-12">
+                                                        <form class="d-flex">
+                                                            <?php echo $PrzyciskAplikacji; ?>
+                                                        </form>
+                                                        </div>
+                                                        <form class="d-flex">
+                                                            <?php echo $Powiadomienie; ?>
+                                                        </form>
                                                     </form>
                                                     
                         </div>
