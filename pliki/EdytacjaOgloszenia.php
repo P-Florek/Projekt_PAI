@@ -91,10 +91,10 @@ $ogloszenie = $wynik->fetch_assoc();
     </div>
 
 
-    <div class="container mt-5">
-    <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
+    <div class="container mt-5 ">
+    <div class="row ">
+            <div class="col-lg-8 ">
+                <div class="card mb-4 ">
                     <img src="<?php echo $ogloszenie['Zdjecie']; ?>" class="card-img-top" alt="Ogłoszenie">
                     <div class="card-body">
                             <div class="col-md-12">

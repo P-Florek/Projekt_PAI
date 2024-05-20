@@ -104,7 +104,7 @@ $mysqli->close();
 
 <div class="container mt-5">
 
-    <div class="row card  card-body mt-4">
+    <div class="row card  card-body mt-4 shadow p-3 mb-5 bg-body-tertiary rounded">
         <h2>Dodawanie Ogłoszenia</h2>
         <form action="DodajOgloszenie.php" method="post">
                 <input type="hidden" name="action" value="daneOgloszenia">

@@ -144,7 +144,7 @@ if (isset($_SESSION["current_user"])) {
             }
 
             if ($zdalnaPraca != 'Wszystkie') {
-                $zapytanie .= " AND PracaZdalna = 'NIE'";
+                $zapytanie .= " AND PracaZdalna = 'TAK'";
             }
 
             if ($rodzajUmowy != 'Wszystkie') {
@@ -160,7 +160,7 @@ if (isset($_SESSION["current_user"])) {
             } elseif ($sortowanie == 'najdrozsze') {
                 $zapytanie .= " ORDER BY WidelkiWynagrodzenia DESC";
             } else {
-                //$zapytanie .= " ORDER BY DataDodania DESC";
+                
             }
 
 

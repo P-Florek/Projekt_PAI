@@ -110,9 +110,9 @@ $ogloszenie = $wynik->fetch_assoc();
 
 
     <div class="container mt-5">
-    <div class="row">
-            <div class="col-lg-8">
-                <div class="card mb-4">
+    <div class="row shadow p-3 mb-5 bg-body-tertiary rounded">
+            <div class="col-lg-9">
+                <div class="">
                 <form method="post" action="edycjaOgloszeniaskrypt.php">
                     <h2>Zdjęcie :</h2>
                     <input type="text" class="form-control" id="NazwaStanowiska" name='Zdj' Value="<?php echo $ogloszenie['Zdjecie']; ?>">
@@ -222,21 +222,26 @@ $ogloszenie = $wynik->fetch_assoc();
                 
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="card mb-4">
+            <div class="col-lg-3">
+                <div class="">
                     <div class="card-body">
                         <div class="advertisement2 bg-light p-3">
-                        
+                        <div class="row">
+                        <div class="col">
                             <button class="add-button" type="submit" name="submit">Edytuj ogłoszenie</button>
                             <input type="hidden" name="ogloszenie_id" value="<?php echo $ogloszenie['ogloszenie_id']; ?>">
                             <input type="hidden" name="action" value="edytujOgloszenie"> 
-                        
+                        </div>
                             </form>
+                        
+                        <div class="col">
                             <form method="post" action="edycjaOgloszeniaskrypt.php">
                                 <button class="add-button" type="submit" name="submit">Usuń ogłoszenie</button>
                                 <input type="hidden" name="ogloszenie_id" value="<?php echo $ogloszenie['ogloszenie_id']; ?>">
                                 <input type="hidden" name="action" value="usunOgloszenie"> 
                             </form>   
+                        </div>
+                        </div>
                         </div>
                     </div>
                 </div>
